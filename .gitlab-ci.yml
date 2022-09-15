@@ -9,6 +9,15 @@
 #
 # This template uses one generic job with conditional builds
 # for the default branch and all other (MR) branches.
+build:
+    image: alpine
+    stage: build
+    script:
+        - echo "Hello Docker" > index.html
+    artifacts:
+        paths:
+            - index.html 
+
 
 docker-build:
   # Use the official docker image.
