@@ -1,31 +1,26 @@
-image: docker:latest
-services:
-  - docker:dind
-
 stages:
-  - build
-  - package
+    - build
+    - package
 
 build:
-  image: gradle:7.4.2-jdk18
-  stage: build
-  only:
-    refs:
-      - master
-      - development
-  script:
-    - ./gradlew clean build -x test
-  artifacts:
-    paths:
-      - build/libs/*.jar
+    image: archlinux
+    stage: build
+    script:
+        - echo "the ci pipline works" > test.txt
+    artifacts:
+        paths:
+            - index.html 
 
-package:
-  stage: package
-  only:
-    refs:
-      - master
-      - development
-  script:
-    - docker build -t registry.docke.com/imageName .
-    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD registry.docker.com
-    - docker push registry.docker.com/imageName
+
+build docker image:
+    image: docker
+    stage: package
+    services:
+        - docker:dind
+    variables:
+        DOCKER_TLS_CERTDIR: ""
+    script:
+        - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
+        - docker build -t $CI_REGISTRY_IMAGE .
+        - docker image ls
+        - docker push --all-tags $CI_REGISTRY_IMAGE
