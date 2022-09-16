@@ -8,6 +8,7 @@ build:
     script:
         - echo "the ci pipline works" > test.txt
         - ls
+        - cd djigitbet
         - ./gradlew assemble
         - ./gradlew test
 
