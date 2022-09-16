@@ -3,13 +3,17 @@ stages:
     - package
 
 build:
-    image: archlinux
+    image: gradle:7.4.2-jdk18
     stage: build
     script:
         - echo "the ci pipline works" > test.txt
+        - cd /djigitbet
+        - ./gradlew assemble
+        - ./gradlew test
+
     artifacts:
         paths:
-            - index.html 
+            - test.txt
 
 
 build docker image:
