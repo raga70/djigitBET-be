@@ -1,13 +1,10 @@
-
-image: docker:stable
-variables:
-    IMAGE NAME: "gradle:7.4.2-jdk18 "
+image: docker:latest
 services:
   - docker:dind
 
 stages:
   - build
-  - packageA
+  - package
 
 build:
   image: gradle:7.4.2-jdk18
@@ -32,9 +29,3 @@ package:
     - docker build -t registry.docke.com/imageName .
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD registry.docker.com
     - docker push registry.docker.com/imageName
-docker: 20.10.12-dind
-build image:
-    script:
-        - docker build -t $CI_REGISTRY/t1788/demos/docker-image-build/$IMAGE_NAME .
-        - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
-        - docker push $CI_REGISTRY/t1788/demos/docker-image-build/$IMAGE_NAME
