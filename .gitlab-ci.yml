@@ -1,31 +1,20 @@
-image: docker:latest
-services:
-  - docker:dind
-
 stages:
-  - build
-  - package
+    - build
+    - package
 
-build:
-  image: gradle:7.4.2-jdk18
-  stage: build
-  only:
-    refs:
-      - master
-      - development
-  script:
-    - ./gradlew clean build -x test
-  artifacts:
-    paths:
-      - build/libs/*.jar
+buildntest:
+    image: gradle:7.4.2-jdk18
+    stage: build
+    script:
+        - echo "the ci pipline works" > test.txt
+        - ls
+        - cd djigitbet
+        - chmod +x gradlew
+        - ./gradlew assemble
+        - ./gradlew test
 
-package:
-  stage: package
-  only:
-    refs:
-      - master
-      - development
-  script:
-    - docker build -t registry.docke.com/imageName .
-    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD registry.docker.com
-    - docker push registry.docker.com/imageName
+    artifacts:
+        paths:
+            - test.txt
+
+
