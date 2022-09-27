@@ -16,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -35,9 +36,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //and add cors *;
 
         http
-                .cors(cors -> cors.disable())
-                .formLogin().disable()
+                .cors().and()
                 .csrf().disable()
+
+                .formLogin().disable()
                 .httpBasic()
                 .and()
                 .sessionManagement()
@@ -51,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/authenticate/login").permitAll()
                 .antMatchers(HttpMethod.POST).hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT).hasRole("ADMIN")
-                .anyRequest().authenticated().and().cors(cors -> cors.disable());
+                .anyRequest().authenticated();
     }
 
     @Override
@@ -75,13 +77,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-
-//NOT WORKING FOR responseEntity 
+    //NOT WORKING FOR responseEntity 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(Arrays.asList("*")); //TODO: change to specific origins   (DOEST WORK)
+        //configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000/")); 
+        configuration.setAllowedOriginPatterns(Arrays.asList("*")); //TODO: change to specific origins (uncomment upper line, comment this line)
         configuration.setAllowedMethods(Arrays.asList("*"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setExposedHeaders(Arrays.asList("*"));
@@ -89,37 +91,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-}
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-//    @Bean
-//    public CorsConfigurationSource corsConfigurationSource() {
-//        CorsConfiguration configuration = new CorsConfiguration();
-//        configuration.setAllowCredentials(true);
-//        configuration.setAllowedOrigins(Arrays.asList("*"));
-//        configuration.setAllowedMethods(Arrays.asList("*"));
-//        configuration.setAllowedHeaders(Arrays.asList("*"));
-//        configuration.setExposedHeaders(Arrays.asList("*"));
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", configuration);
-//        return source;
-//    }
 
-//    @Bean
-//    SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-//        http
-//                
-//                .cors(cors -> cors.disable());
-//        return http.build();
-//    }
-    
-    
+}

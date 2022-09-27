@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -47,6 +48,7 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
                 .sign(Algorithm.HMAC256(secret));
         response.addHeader("Authorization", "Bearer "+token);
         response.addHeader("Content-Type", "application/json");
+        response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         response.getWriter().write("{\"token\": \""+token+"\"}");
     }
 

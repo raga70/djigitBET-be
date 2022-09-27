@@ -1,6 +1,6 @@
 package com.djigitbet.djigitbet.security;
 
-import com.djigitbet.djigitbet.security.domain.LoginCredentials;
+import com.djigitbet.djigitbet.security.Entity.LoginCredentials;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

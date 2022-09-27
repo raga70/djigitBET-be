@@ -36,7 +36,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
         try {
             String headerAuth = request.getHeader(HttpHeaders.AUTHORIZATION);
-
+            System.out.println(request.getMethod());
 
             if (StringUtils.hasText(headerAuth) && headerAuth.startsWith(_BEARER)) {
                 String jwtToken = headerAuth.substring(7);

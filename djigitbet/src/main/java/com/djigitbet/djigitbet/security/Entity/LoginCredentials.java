@@ -1,4 +1,4 @@
-package com.djigitbet.djigitbet.security.domain;
+package com.djigitbet.djigitbet.security.Entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
