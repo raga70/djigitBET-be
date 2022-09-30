@@ -1,7 +1,7 @@
 package com.djigitbet.djigitbet.Services;
 
 import com.djigitbet.djigitbet.DataAcessLayer.IUserRepository;
-import com.djigitbet.djigitbet.Entity.impl.User;
+import com.djigitbet.djigitbet.Model.Entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,15 +19,7 @@ public class AuthenticationManagerUserService {
     public  boolean Login(String username, String password){
 
        User user = userRepository.findByUsername(username).get(0);
-      
-      ///testblock
-       var a =  user.getPassword();
-       var b = password;
-       boolean result;
-       if(a.equals(b)){ //lol put more money in to sailing yachts and f1 teams no need to implement == for string comparison  Oracle ❤️
-              result = true;
-         }else result = false;
-      ///testblock
+       
       
       
          if(user != null){

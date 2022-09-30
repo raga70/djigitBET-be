@@ -4,6 +4,7 @@ package com.djigitbet.djigitbet.security.config;
 import com.djigitbet.djigitbet.Services.UserDetailsService;
 import com.djigitbet.djigitbet.Services.UserService;
 import com.djigitbet.djigitbet.security.AuthTokenFilter;
+import org.hibernate.mapping.Any;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,9 +51,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/login/**").permitAll()
                 //  .antMatchers("/user/**").permitAll()
-                .antMatchers("/authenticate/login").permitAll()
-                .antMatchers(HttpMethod.POST).hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT).hasRole("ADMIN")
+                .antMatchers("/authenticate/**").permitAll()
+                .antMatchers("/user/**").hasAuthority("ADMIN")
+                                
+               // .antMatchers(HttpMethod.POST).hasRole("ADMIN")
+               // .antMatchers(HttpMethod.PUT).hasRole("ADMIN")
                 .anyRequest().authenticated();
     }
 

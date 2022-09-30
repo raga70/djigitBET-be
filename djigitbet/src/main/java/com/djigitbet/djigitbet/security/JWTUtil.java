@@ -1,13 +1,12 @@
 package com.djigitbet.djigitbet.security;
 
 
-import com.djigitbet.djigitbet.Entity.impl.User;
+import com.djigitbet.djigitbet.Model.Entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
-import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
