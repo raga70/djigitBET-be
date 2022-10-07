@@ -11,10 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,7 +27,7 @@ public  class User implements UserDetails {
     @NotBlank(message = "type is mandatory")
    // @Enumerated(EnumType.STRING)
     private UserType type; //required so i can define what kind of object need to be created after the json file has been received by the controller
-
+    
     @Column(unique=true)
     private String username;
     private String password;
@@ -105,10 +102,10 @@ public  class User implements UserDetails {
     }
 
     
+    
 public User(EditUserRequestDTO editUserRequestDTO) {
         this.userID = editUserRequestDTO.getUserID();
         this.username = editUserRequestDTO.getUsername();
-        if(editUserRequestDTO.getPassword() != "")
         this.password = editUserRequestDTO.getPassword();
         this.type = editUserRequestDTO.getType();
     }
