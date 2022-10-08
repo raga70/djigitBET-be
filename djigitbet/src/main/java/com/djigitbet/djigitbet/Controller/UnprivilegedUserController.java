@@ -43,9 +43,11 @@ public class UnprivilegedUserController {
             Player incomingUser = new Player(incomingDTO);
             if (incomingUser.getType() == UserType.ADMIN) {
                 User user = (User) incomingUser;
+                
                responceUser = userService.UpdateUser(user, incomingDTO.getUserID());
             } else {
-
+                incomingUser.setBalance(((Player)userService.GetUser(incomingUser.getUserID())).getBalance());
+                incomingUser.setWinCoefficient(((Player)userService.GetUser(incomingUser.getUserID())).getWinCoefficient());
                responceUser = userService.UpdateUser(incomingUser, incomingDTO.getUserID());
             }
         } else {
