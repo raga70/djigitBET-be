@@ -44,6 +44,7 @@ public  class SlotEngine {   //the correct way to do this  is with a static clas
             casino.setCasinoFunds(casino.getCasinoFunds() - prize);
             casino.setTotalWinCoefficient(casino.getTotalWinCoefficient() + 0.1);
             player.setBalance(player.getBalance() + prize);
+            player.setFundsPayedOut(player.getFundsPayedOut() + prize);
             
         }else {
             supportWin(results, player, betAmount);
@@ -115,6 +116,7 @@ public  class SlotEngine {   //the correct way to do this  is with a static clas
 
     } else {
             player.setBalance(player.getBalance() - betAmount);
+            player.setFundsLost(player.getFundsLost() + betAmount);
             player.setWinCoefficient(player.getWinCoefficient() - 0.1);
             prize = 0;
 
@@ -141,6 +143,10 @@ public  class SlotEngine {   //the correct way to do this  is with a static clas
             prize = betAmount * 5;
         }
 
+    }
+    
+    public double getJackpot(){
+        return casino.getJackpot();
     }
     
     

@@ -1,6 +1,5 @@
 package com.djigitbet.djigitbet.Controller;
 
-import com.djigitbet.djigitbet.Model.DTO.EditPlayerRequestDTO;
 import com.djigitbet.djigitbet.Model.DTO.SlotCalculationsDTO;
 import com.djigitbet.djigitbet.Model.DTO.placeBetDTO;
 import com.djigitbet.djigitbet.Model.Entity.Player;
@@ -10,6 +9,7 @@ import com.djigitbet.djigitbet.Services.SlotEngine;
 import com.djigitbet.djigitbet.Services.UserService;
 import com.djigitbet.djigitbet.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -27,15 +27,20 @@ public class SlotsController {
 
     @Autowired
     SlotEngine slotEngine;
-    
-    
-    
+
+
+    @GetMapping("/jackpot")
+    ResponseEntity getJackpot() {
+        return ResponseEntity.ok()
+                .body( slotEngine.getJackpot());
+
+    }
     
     
 
 
     @PostMapping("/")
-    ResponseEntity<?> UpdateUser(@RequestHeader("Authorization") String token, @RequestBody placeBetDTO bet ) {
+    ResponseEntity<?> PlaceBet(@RequestHeader("Authorization") String token, @RequestBody placeBetDTO bet ) {
         Player player;
         SlotCalculationsDTO slotCalculationsDTO = new SlotCalculationsDTO();
         int userIDFromToken = 0;

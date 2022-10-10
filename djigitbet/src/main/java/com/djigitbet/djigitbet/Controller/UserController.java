@@ -3,21 +3,17 @@ package com.djigitbet.djigitbet.Controller;
 
 import com.djigitbet.djigitbet.Model.DTO.EditPlayerRequestDTO;
 import com.djigitbet.djigitbet.Model.DTO.PlayerDTO;
+import com.djigitbet.djigitbet.Model.DTO.PlayerFullDTO;
 import com.djigitbet.djigitbet.Model.Entity.Player;
 import com.djigitbet.djigitbet.Model.Entity.User;
 import com.djigitbet.djigitbet.Model.Entity.UserType;
 import com.djigitbet.djigitbet.Services.UserService;
-import com.djigitbet.djigitbet.security.JWTUtil;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.modelmapper.ModelMapper;
 import javax.validation.Valid;
-import java.security.PublicKey;
 import java.util.Arrays;
 import java.util.List;
 
@@ -92,7 +88,13 @@ public class UserController {
      }
 
 
-  
+     @GetMapping("/pagged/{pageNo}/{pageSize}/{sortBy}")
+     public List<PlayerFullDTO> GetAllPlayersPagged(@PathVariable int pageNo, @PathVariable int pageSize, @PathVariable String sortBy) {
+
+         var outgoing = modelMapper.map(userService.GetAllUsersPagged(pageNo,pageSize,sortBy), PlayerFullDTO[].class);
+         return Arrays.stream(outgoing).toList();
+
+     }
 
     
  }           

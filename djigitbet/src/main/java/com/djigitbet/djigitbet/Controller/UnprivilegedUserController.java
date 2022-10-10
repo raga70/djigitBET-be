@@ -46,8 +46,10 @@ public class UnprivilegedUserController {
                 
                responceUser = userService.UpdateUser(user, incomingDTO.getUserID());
             } else {
-                incomingUser.setBalance(((Player)userService.GetUser(incomingUser.getUserID())).getBalance());
+                incomingUser.setBalance(((Player)userService.GetUser(incomingUser.getUserID())).getBalance()); //JPA NO Joke the documentation recommends this (Just pull it from the database and set it yourself), like are you joking with me 
                 incomingUser.setWinCoefficient(((Player)userService.GetUser(incomingUser.getUserID())).getWinCoefficient());
+                incomingUser.setFundsLost(((Player)userService.GetUser(incomingUser.getUserID())).getFundsLost());
+                incomingUser.setFundsPayedOut(((Player)userService.GetUser(incomingUser.getUserID())).getFundsPayedOut());
                responceUser = userService.UpdateUser(incomingUser, incomingDTO.getUserID());
             }
         } else {

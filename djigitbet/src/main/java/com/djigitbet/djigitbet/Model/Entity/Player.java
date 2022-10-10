@@ -31,6 +31,11 @@ public class Player extends User {
     private double WinCoefficient;
     private double balance;
 
+
+
+    private double FundsLost;
+    private double FundsPayedOut;
+
     
     public Player(EditPlayerRequestDTO editPlayerRequestDTO) {
         super(editPlayerRequestDTO);
@@ -96,5 +101,19 @@ public class Player extends User {
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+    public double getFundsPayedOut() {
+        return FundsPayedOut;
+    }
+
+    public double getFundsLost() {
+        return FundsLost;
+    }
+    public void setFundsLost(double fundsLost) {
+        FundsLost = fundsLost;
+    }
+
+    public void setFundsPayedOut(double fundsPayedOut) {
+        FundsPayedOut = fundsPayedOut;
     }
 }
