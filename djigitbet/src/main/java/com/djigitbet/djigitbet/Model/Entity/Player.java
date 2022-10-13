@@ -1,8 +1,6 @@
 package com.djigitbet.djigitbet.Model.Entity;
 
 import com.djigitbet.djigitbet.Model.DTO.EditPlayerRequestDTO;
-import com.djigitbet.djigitbet.Model.DTO.PlayerDTO;
-import com.djigitbet.djigitbet.Model.DTO.UserDTO;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -18,7 +16,7 @@ public class Player extends User {
     private String name;
     @NotBlank
     private String surname;
-    
+
     @NotBlank
     private String nationalIDNumber;
     @NotBlank
@@ -26,17 +24,16 @@ public class Player extends User {
     private String email;
     @NotBlank
     private String phoneNumber;
- 
-    
-    private double WinCoefficient;
+
+
+    private double winCoefficient;
     private double balance;
 
 
+    private double fundsLost;
+    private double fundsPayedOut;
 
-    private double FundsLost;
-    private double FundsPayedOut;
 
-    
     public Player(EditPlayerRequestDTO editPlayerRequestDTO) {
         super(editPlayerRequestDTO);
         this.name = editPlayerRequestDTO.getName();
@@ -45,8 +42,8 @@ public class Player extends User {
         this.email = editPlayerRequestDTO.getEmail();
         this.phoneNumber = editPlayerRequestDTO.getPhoneNumber();
     }
-    
-    
+
+
     public String getName() {
         return name;
     }
@@ -88,11 +85,11 @@ public class Player extends User {
     }
 
     public double getWinCoefficient() {
-        return WinCoefficient;
+        return winCoefficient;
     }
 
     public void setWinCoefficient(double winCoefficient) {
-        WinCoefficient = winCoefficient;
+        this.winCoefficient = winCoefficient;
     }
 
     public double getBalance() {
@@ -102,18 +99,20 @@ public class Player extends User {
     public void setBalance(double balance) {
         this.balance = balance;
     }
-    public double getFundsPayedOut() {
-        return FundsPayedOut;
-    }
 
-    public double getFundsLost() {
-        return FundsLost;
-    }
-    public void setFundsLost(double fundsLost) {
-        FundsLost = fundsLost;
+    public double getFundsPayedOut() {
+        return fundsPayedOut;
     }
 
     public void setFundsPayedOut(double fundsPayedOut) {
-        FundsPayedOut = fundsPayedOut;
+        this.fundsPayedOut = fundsPayedOut;
+    }
+
+    public double getFundsLost() {
+        return fundsLost;
+    }
+
+    public void setFundsLost(double fundsLost) {
+        this.fundsLost = fundsLost;
     }
 }

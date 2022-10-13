@@ -8,14 +8,14 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.djigitbet.djigitbet.Services","com.djigitbet.djigitbet.DataAcessLayer","com.djigitbet.djigitbet.Controller", "com.djigitbet.djigitbet.security.config", "com.djigitbet.djigitbet.security.Entity", "com.djigitbet.djigitbet.security"})
+@ComponentScan(basePackages = {"com.djigitbet.djigitbet.Services", "com.djigitbet.djigitbet.DataAcessLayer", "com.djigitbet.djigitbet.Controller", "com.djigitbet.djigitbet.security.config", "com.djigitbet.djigitbet.security.Entity", "com.djigitbet.djigitbet.security"})
 @EntityScan("com.djigitbet.djigitbet.Model.Entity")
 
 @EnableJpaRepositories("com.djigitbet.djigitbet.DataAcessLayer")
 public class DjigitbetApplication extends SpringBootServletInitializer {
 
-	public static void main(String[] args) {
-		SpringApplication.run(DjigitbetApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(DjigitbetApplication.class, args);
+    }
 
 }

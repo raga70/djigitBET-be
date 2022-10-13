@@ -1,6 +1,5 @@
 package com.djigitbet.djigitbet.Model.DTO;
 
-import com.djigitbet.djigitbet.Model.Entity.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,8 +21,9 @@ public class EditPlayerRequestDTO extends EditUserRequestDTO {
     @NotBlank
     @Email
     private String email;
+
     @NotBlank
     private String phoneNumber;
-    
-    
+
+
 }

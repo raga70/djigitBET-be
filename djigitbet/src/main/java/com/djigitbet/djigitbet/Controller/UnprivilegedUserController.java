@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,14 +21,14 @@ import org.springframework.web.bind.annotation.*;
 public class UnprivilegedUserController {
 
 
+    private final ModelMapper modelMapper = new ModelMapper();
     @Autowired
     private UserService userService;
     @Autowired
     private JWTUtil jwtUtil;
-    private ModelMapper modelMapper = new ModelMapper();    
 
     @PutMapping("/")
-    ResponseEntity<?> UpdateUser(@RequestHeader("Authorization") String token, @RequestBody EditPlayerRequestDTO incomingDTO) {
+    ResponseEntity<?> UpdateUser(@RequestHeader("Authorization") String token, @RequestBody @Validated EditPlayerRequestDTO incomingDTO) {
         User responceUser;
         int userIDFromToken = 0;
         if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
@@ -36,21 +37,21 @@ public class UnprivilegedUserController {
             userIDFromToken = jwtUtil.parseJWT(jwtToken).get("userID", Integer.class);
 
         }
-        if(userService.GetUser(userIDFromToken).getType() != incomingDTO.getType()){
+        if (userService.GetUser(userIDFromToken).getType() != incomingDTO.getType()) {
             return ResponseEntity.badRequest().body("You are not allowed to change your type");
         }
         if (userIDFromToken == incomingDTO.getUserID()) {
             Player incomingUser = new Player(incomingDTO);
             if (incomingUser.getType() == UserType.ADMIN) {
-                User user = (User) incomingUser;
-                
-               responceUser = userService.UpdateUser(user, incomingDTO.getUserID());
+                User user = incomingUser;
+
+                responceUser = userService.UpdateUser(user, incomingDTO.getUserID());
             } else {
-                incomingUser.setBalance(((Player)userService.GetUser(incomingUser.getUserID())).getBalance()); //JPA NO Joke the documentation recommends this (Just pull it from the database and set it yourself), like are you joking with me 
-                incomingUser.setWinCoefficient(((Player)userService.GetUser(incomingUser.getUserID())).getWinCoefficient());
-                incomingUser.setFundsLost(((Player)userService.GetUser(incomingUser.getUserID())).getFundsLost());
-                incomingUser.setFundsPayedOut(((Player)userService.GetUser(incomingUser.getUserID())).getFundsPayedOut());
-               responceUser = userService.UpdateUser(incomingUser, incomingDTO.getUserID());
+                incomingUser.setBalance(((Player) userService.GetUser(incomingUser.getUserID())).getBalance()); //JPA NO Joke the documentation recommends this (Just pull it from the database and set it yourself)
+                incomingUser.setWinCoefficient(((Player) userService.GetUser(incomingUser.getUserID())).getWinCoefficient());
+                incomingUser.setFundsLost(((Player) userService.GetUser(incomingUser.getUserID())).getFundsLost());
+                incomingUser.setFundsPayedOut(((Player) userService.GetUser(incomingUser.getUserID())).getFundsPayedOut());
+                responceUser = userService.UpdateUser(incomingUser, incomingDTO.getUserID());
             }
         } else {
             return ResponseEntity.badRequest().body("You are not authorized to update this user");

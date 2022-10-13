@@ -15,36 +15,32 @@ public class AuthenticationManagerUserService {
 
     @Autowired
     private IUserRepository userRepository;
-    
-    public  boolean Login(String username, String password){
 
-       User user = userRepository.findByUsername(username).get(0);
-       
-      
-      
-         if(user != null){
-             if(Objects.equals(password, user.getPassword())){ //update pass (hash)
-                 user.setPassword(passwordEncoder.encode(user.getPassword()));
-                 userRepository.save(user);
-                 return true;
-             }
-              if(passwordEncoder.matches(password, user.getPassword())){
+    public boolean Login(String username, String password) {
+
+        User user = userRepository.findByUsername(username).get(0);
+
+
+        if (user != null) {
+            if (Objects.equals(password, user.getPassword())) { //update pass (hash)
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
+                userRepository.save(user);
                 return true;
-              }
-         }
-         return false;
+            }
+            return passwordEncoder.matches(password, user.getPassword());
+        }
+        return false;
     }
-    
-     
-    public boolean Register(User user ){
-        if(userRepository.findByUsername(user.getUsername()).size() == 0){
+
+
+    public boolean Register(User user) {
+        if (userRepository.findByUsername(user.getUsername()).size() == 0) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepository.save(user);
             return true;
         }
         return false;
     }
-    
-         
-    
+
+
 }

@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class totalPlayerFundsDTO {
-   double totalFundsPayedIn;
-   double totalFundsPayedOut;
+    double totalFundsPayedIn;
+    double totalFundsPayedOut;
 }

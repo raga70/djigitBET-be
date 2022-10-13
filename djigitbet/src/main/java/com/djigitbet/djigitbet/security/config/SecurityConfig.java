@@ -2,29 +2,23 @@ package com.djigitbet.djigitbet.security.config;
 
 
 import com.djigitbet.djigitbet.Services.UserDetailsService;
-import com.djigitbet.djigitbet.Services.UserService;
 import com.djigitbet.djigitbet.security.AuthTokenFilter;
-import org.hibernate.mapping.Any;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -56,8 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/statistics/**").hasAuthority("ADMIN")
                 .antMatchers("/slots/jackpot/**").permitAll()
                 .antMatchers("/slots/**").hasAuthority("PLAYER")
-               // .antMatchers(HttpMethod.POST).hasRole("ADMIN")
-               // .antMatchers(HttpMethod.PUT).hasRole("ADMIN")
+                // .antMatchers(HttpMethod.POST).hasRole("ADMIN")
+                // .antMatchers(HttpMethod.PUT).hasRole("ADMIN")
                 .anyRequest().authenticated();
     }
 
@@ -88,14 +82,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
         //configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000/")); 
-        configuration.setAllowedOriginPatterns(Arrays.asList("*")); //TODO: change to specific origins (uncomment upper line, comment this line)
-        configuration.setAllowedMethods(Arrays.asList("*"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setExposedHeaders(Arrays.asList("*"));
+        configuration.setAllowedOriginPatterns(List.of("*")); //TODO: change to specific origins (uncomment upper line, comment this line)
+        configuration.setAllowedMethods(List.of("*"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setExposedHeaders(List.of("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-    
+
 
 }

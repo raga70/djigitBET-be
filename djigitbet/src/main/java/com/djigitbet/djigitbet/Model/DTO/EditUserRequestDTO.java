@@ -13,11 +13,11 @@ import javax.validation.constraints.NotBlank;
 public class EditUserRequestDTO {
 
     private int userID;
-    
+
     @NotBlank
     private UserType type;
     @NotBlank
     private String username;
-    
+
     private String password;
 }

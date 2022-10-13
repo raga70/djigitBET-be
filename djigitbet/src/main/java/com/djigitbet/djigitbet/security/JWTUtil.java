@@ -12,29 +12,29 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
-
 import java.util.Date;
 import java.util.UUID;
 
 @Component
 @Log4j2
 
-public  class JWTUtil {
+public class JWTUtil {
 
+    private static final String CLAIM_USERNAME_KEY = "username";
+    private static final String CLAIM_USERID_KEY = "userID";
     @Value("${jwt.issuer}")
     private String issuer;
-
     @Value("${jwt.secret}")
     private String secret;
-
     @Value("${jwt.audience}")
     private String audience;
-
     @Value("${jwt.ttl-in-seconds}")
     private long timeToLiveInSeconds;
+    private SecretKey secretKey;
+
 
     public JWTUtil(@Value("${jwt.issuer}") String issuer, //it`s just the small stuff like that take 30 min to debug because spring removed a feature Make me Hate this language and framework 
                    @Value("${jwt.secret}") String secret,
@@ -45,26 +45,11 @@ public  class JWTUtil {
         this.audience = audience;
         this.timeToLiveInSeconds = timeToLiveInSeconds;
     }
-    
-    
-    
-    
-    private SecretKey secretKey;
 
     @PostConstruct
     public void setUpSecretKey() {
-        try {
-            secretKey = Keys.hmacShaKeyFor(secret.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            log.error("Error generating JWT Secret Key : {}", e.getMessage());
-            throw new RuntimeException("Error generating JWT Secret Key", e);
-        }
+        secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
-
-
-    private static final String CLAIM_USERNAME_KEY = "username";
-    private static final String CLAIM_USERID_KEY = "userID";
-
 
     public String createJWT(User user) {
 
@@ -81,7 +66,6 @@ public  class JWTUtil {
                         .compact();
         return jwt;
     }
-
 
 
     public Claims parseJWT(String jwtString) {

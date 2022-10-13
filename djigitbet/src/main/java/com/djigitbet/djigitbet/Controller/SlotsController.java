@@ -9,9 +9,9 @@ import com.djigitbet.djigitbet.Services.SlotEngine;
 import com.djigitbet.djigitbet.Services.UserService;
 import com.djigitbet.djigitbet.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,27 +20,22 @@ import org.springframework.web.bind.annotation.*;
 public class SlotsController {
 
     @Autowired
-    private JWTUtil jwtUtil;
-
-    @Autowired
     UserService userService;
-
     @Autowired
     SlotEngine slotEngine;
-
+    @Autowired
+    private JWTUtil jwtUtil;
 
     @GetMapping("/jackpot")
     ResponseEntity getJackpot() {
         return ResponseEntity.ok()
-                .body( slotEngine.getJackpot());
+                .body(slotEngine.getJackpot());
 
     }
-    
-    
 
 
     @PostMapping("/")
-    ResponseEntity<?> PlaceBet(@RequestHeader("Authorization") String token, @RequestBody placeBetDTO bet ) {
+    ResponseEntity<?> PlaceBet(@RequestHeader("Authorization") String token, @RequestBody @Validated placeBetDTO bet) {
         Player player;
         SlotCalculationsDTO slotCalculationsDTO = new SlotCalculationsDTO();
         int userIDFromToken = 0;
@@ -59,7 +54,7 @@ public class SlotsController {
         player = (Player) tmpUser;
         try {
             slotCalculationsDTO = slotEngine.Play(player, bet.getBetAmount());
-            
+
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

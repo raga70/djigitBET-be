@@ -12,17 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/statistics")
 public class StatisticsController {
-    
-    @Autowired 
+
+    @Autowired
     private StatisticsService statisticsService;
-    
+
     @GetMapping("/")
     public AggregatedStatisticsDTO getAggregatedStatistics() {
         return statisticsService.GetAggregatedStatistics();
     }
-    
-    
-    
-    
-    
+
+
 }
