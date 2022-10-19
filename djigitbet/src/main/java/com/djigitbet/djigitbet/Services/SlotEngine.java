@@ -4,8 +4,12 @@ import com.djigitbet.djigitbet.DataAcessLayer.ICassinoRepository;
 import com.djigitbet.djigitbet.Model.DTO.SlotCalculationsDTO;
 import com.djigitbet.djigitbet.Model.Entity.Casino;
 import com.djigitbet.djigitbet.Model.Entity.Player;
+import lombok.SneakyThrows;
+
 import org.springframework.stereotype.Service;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Random;
 
 @Service
@@ -15,15 +19,16 @@ public class SlotEngine {   //the correct way to do this  is with a static class
     ICassinoRepository casinoRepository;
     UserService userService;
 
-
+    SecureRandom random = SecureRandom.getInstanceStrong();
     Casino casino;   //TODO: replace with cassino from db
-
+    
     double prize;
-
-    public SlotEngine(ICassinoRepository casinoRepository, UserService userService) {
+    
+    @SneakyThrows
+    public SlotEngine(ICassinoRepository casinoRepository, UserService userService) throws NoSuchAlgorithmException {
         this.casinoRepository = casinoRepository;
         this.userService = userService;
-        casino = casinoRepository.findById(1).get();
+        casino = casinoRepository.getCasinoById(1);
     }
 
     public SlotCalculationsDTO Play(Player player, double betAmount) {
@@ -62,12 +67,9 @@ public class SlotEngine {   //the correct way to do this  is with a static class
         var Calcs = new SlotCalculationsDTO();
         int low = 1;
         int high = 100;
-        Random r = new Random();
-        Calcs.setRing1(r.nextInt(high - low) + low);
-        Random r2 = new Random();
-        Calcs.setRing2(r2.nextInt(high - low) + low);
-        Random r3 = new Random();
-        Calcs.setRing3(r3.nextInt(high - low) + low);
+        Calcs.setRing1(random.nextInt(high - low) + low);
+        Calcs.setRing2(random.nextInt(high - low) + low);
+        Calcs.setRing3(random.nextInt(high - low) + low);
         return Calcs;
 
     }

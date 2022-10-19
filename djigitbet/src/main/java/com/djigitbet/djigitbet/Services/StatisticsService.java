@@ -21,7 +21,7 @@ public class StatisticsService {
         var totalPlayerFunds = playerRepository.getAggregatedStatistics();
         double totalFundsPayedIn = totalPlayerFunds.get(0)[0]; //jpa cannot map to totalPlayerFundsDTO, and only gives you an object array without names when you need to do a custom query , because jpa is missing basic features that other orms provide like SUM(), AVG()
         double totalFundsPayedOut = totalPlayerFunds.get(0)[1];
-        var casino = casinoRepository.findById(1).get();
+        var casino = casinoRepository.getCasinoById(1);
         aggregatedStatistics.setTotalFundsPayedIn(totalFundsPayedIn);
         aggregatedStatistics.setTotalFundsPayedOut(totalFundsPayedOut);
         aggregatedStatistics.setJackpot(casino.getJackpot());

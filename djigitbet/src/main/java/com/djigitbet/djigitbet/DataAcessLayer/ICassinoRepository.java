@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ICassinoRepository extends JpaRepository<Casino, Integer> {
-
+Casino getCasinoById(int id);
 }

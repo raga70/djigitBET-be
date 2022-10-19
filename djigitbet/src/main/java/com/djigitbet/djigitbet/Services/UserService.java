@@ -36,7 +36,8 @@ public class UserService {
 
 
     public User GetUser(int id) {
-        return userRepository.findById(id).get();
+        var user = userRepository.findById(id);
+        return user.orElse(null);
     }
 
 
@@ -55,8 +56,7 @@ public class UserService {
         if (newUser.getPassword() == null || newUser.getPassword().equals("")) {
             newUser.setPassword(GetUser(id).getPassword());  //JPA is a terrible ORM https://stackoverflow.com/questions/28595391/how-to-do-not-update-attributes-of-an-entry-if-such-value-is-null-jpa
         }
-        userRepository.save(newUser);
-        return userRepository.findById(id).get();
+        return userRepository.save(newUser);
 
     }
 

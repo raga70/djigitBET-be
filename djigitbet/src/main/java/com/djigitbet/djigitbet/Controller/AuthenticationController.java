@@ -10,6 +10,7 @@ import com.djigitbet.djigitbet.security.Entity.LoginCredentials;
 import com.djigitbet.djigitbet.security.JWTUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@CrossOrigin(maxAge = 3600)
+
 @RequestMapping("/authenticate")
 public class AuthenticationController {
     private final ModelMapper modelMapper = new ModelMapper();
@@ -32,7 +33,7 @@ public class AuthenticationController {
     private AuthenticationManager authenticationManager;
     @Autowired
     private JWTUtil jwtUtil;
-
+    
     @PostMapping("/register")
     public String SaveUser(@Valid @RequestBody() EditPlayerRequestDTO incomingDTO) {
         Player incomingUser = new Player(incomingDTO);
