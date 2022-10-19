@@ -12,6 +12,7 @@ buildntest:
         - chmod +x gradlew
         - ./gradlew assemble
         - ./gradlew test
+        - ./gradlew sonarqube
 
     artifacts:
         paths:
