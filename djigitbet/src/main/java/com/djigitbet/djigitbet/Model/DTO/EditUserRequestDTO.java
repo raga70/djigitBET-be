@@ -14,10 +14,18 @@ public class EditUserRequestDTO {
 
     private int userID;
 
-    @NotBlank
+    
     private UserType type;
     @NotBlank
     private String username;
 
     private String password;
+    
+    public  EditUserRequestDTO(EditPlayerRequestDTO editPlayerRequestDTO){
+        this.userID = editPlayerRequestDTO.getUserID();
+        this.type = editPlayerRequestDTO.getType();
+        this.username = editPlayerRequestDTO.getUsername();
+        this.password = editPlayerRequestDTO.getPassword();
+    }
+    
 }
