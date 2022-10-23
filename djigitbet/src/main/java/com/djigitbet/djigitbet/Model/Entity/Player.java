@@ -1,10 +1,11 @@
 package com.djigitbet.djigitbet.Model.Entity;
 
 import com.djigitbet.djigitbet.Model.DTO.EditPlayerRequestDTO;
-import jakarta.persistence.Entity;
+
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Entity;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
@@ -12,17 +13,17 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @Entity
 public class Player extends User {
-    @NotBlank
+     
     private String name;
-    @NotBlank
+     
     private String surname;
 
-    @NotBlank
+     
     private String nationalIDNumber;
-    @NotBlank
-    @Email
+     
+    
     private String email;
-    @NotBlank
+     
     private String phoneNumber;
 
 

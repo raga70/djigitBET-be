@@ -2,13 +2,14 @@ package com.djigitbet.djigitbet.Model.Entity;
 
 
 import com.djigitbet.djigitbet.Model.DTO.EditUserRequestDTO;
-import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.HashSet;
@@ -25,8 +26,8 @@ public class User implements UserDetails {
     private int userID;
 
 
-    @NotBlank(message = "type is mandatory")
-    // @Enumerated(EnumType.STRING)
+   
+     //@Enumerated(EnumType.STRING)
     private UserType type; //required so i can define what kind of object need to be created after the json file has been received by the controller
 
     @Column(unique = true)

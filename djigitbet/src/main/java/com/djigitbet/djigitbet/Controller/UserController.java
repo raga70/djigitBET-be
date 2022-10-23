@@ -1,19 +1,19 @@
 package com.djigitbet.djigitbet.Controller;
 
-import com.djigitbet.djigitbet.Model.DTO.EditPlayerRequestDTO;
-import com.djigitbet.djigitbet.Model.DTO.PlayerDTO;
-import com.djigitbet.djigitbet.Model.DTO.PlayerFullDTO;
+import com.djigitbet.djigitbet.Model.DTO.*;
 import com.djigitbet.djigitbet.Model.Entity.Player;
 import com.djigitbet.djigitbet.Model.Entity.User;
 import com.djigitbet.djigitbet.Model.Entity.UserType;
 import com.djigitbet.djigitbet.Services.UserService;
-import jakarta.servlet.http.HttpServletResponse;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.validation.Validation;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,10 +31,16 @@ public class UserController {
 
 
     @PostMapping("/")
-    public String SaveUser(@Valid @RequestBody @Validated EditPlayerRequestDTO incomingDTO) {
+    public String SaveUser( @RequestBody  EditPlayerRequestDTO incomingDTO) {
+        
+       if(!validationWorkaraound(incomingDTO)){
+           return "Validation failed";}
 
-
+       
+          
+        
         Player incomingUser = new Player(incomingDTO);
+        
 
 
         if (incomingUser.getType() == UserType.ADMIN) {   //recast because java can`t detect the type of the object 
@@ -65,8 +71,9 @@ public class UserController {
 
 
     @PutMapping("/{id}")
-    PlayerDTO UpdateUser(@RequestBody @Validated EditPlayerRequestDTO incomingDTO, @PathVariable int id) {
-
+    PlayerDTO UpdateUser(@RequestBody  EditPlayerRequestDTO incomingDTO, @PathVariable int id) {
+        if(!validationWorkaraound(incomingDTO)){
+            return null;}
         Player incomingUser = new Player(incomingDTO);
         if (incomingUser.getType() == UserType.ADMIN) {
             User user = incomingUser;
@@ -93,7 +100,28 @@ public class UserController {
         return Arrays.stream(outgoing).toList();
 
     }
-
+    
+    
+    
+    
+    
+    private boolean validationWorkaraound(EditPlayerRequestDTO playerDTO){
+        if(playerDTO.getType().equals(UserType.ADMIN)){
+            EditUserRequestDTO userDTO = new EditUserRequestDTO(playerDTO);
+            var validator = Validation.buildDefaultValidatorFactory().getValidator();
+            var violations = validator.validate(userDTO);
+            if(violations.size() > 0){
+                return false;
+            }
+            return true;
+        }
+        var validator = Validation.buildDefaultValidatorFactory().getValidator();
+        var violations = validator.validate(playerDTO);
+        if(violations.size() > 0){
+            return false;
+        }
+        return true;
+    }
 
 }           
     
