@@ -13,12 +13,11 @@ import java.util.Map;
 
 @Component
 public class StripeClient {
+    
     @Autowired
-    StripeClient(@Value("${stripe.secret}")
-                 String stripeSecret) {
-        Stripe.apiKey = stripeSecret;
-    }
-
+    StripeClient(@Value("${stripe.secret}") String stripeSecret)
+    {Stripe.apiKey = stripeSecret;}
+    
     public Customer createCustomer(String token, String email) throws Exception {
         Map<String, Object> customerParams = new HashMap<String, Object>();
         customerParams.put("email", email);

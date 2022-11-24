@@ -3,18 +3,20 @@ package com.djigitbet.djigitbet.Services;
 import com.djigitbet.djigitbet.DataAcessLayer.ICassinoRepository;
 import com.djigitbet.djigitbet.DataAcessLayer.IPlayerRepository;
 import com.djigitbet.djigitbet.Model.DTO.AggregatedStatisticsDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class StatisticsService {
 
-    @Autowired
-    private IPlayerRepository playerRepository;
+    private final IPlayerRepository playerRepository;
 
-    @Autowired
-    private ICassinoRepository casinoRepository;
+    private final ICassinoRepository casinoRepository;
 
+    public StatisticsService(IPlayerRepository playerRepository1, ICassinoRepository casinoRepository1){
+
+        this.playerRepository = playerRepository1;
+        this.casinoRepository = casinoRepository1;
+    }
 
     public AggregatedStatisticsDTO GetAggregatedStatistics() {
         var aggregatedStatistics = new AggregatedStatisticsDTO();

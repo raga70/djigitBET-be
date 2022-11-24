@@ -4,7 +4,6 @@ import com.djigitbet.djigitbet.DataAcessLayer.IUserRepository;
 import com.djigitbet.djigitbet.Model.Entity.Player;
 import com.djigitbet.djigitbet.Model.Entity.User;
 import com.djigitbet.djigitbet.Model.Entity.UserType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -15,8 +14,11 @@ import java.util.List;
 @Service
 public class UserService {
 
-    @Autowired
-    private IUserRepository userRepository;
+    private final IUserRepository userRepository;
+
+    public UserService(IUserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
 
     public List<User> GetAllUsers() {
@@ -28,10 +30,7 @@ public class UserService {
 
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
         List<Player> pagedResult = userRepository.findAllByType(UserType.PLAYER, paging); // jpa`s field detections is kinda broken and requires a separate method in the base repo of type the children  
-
-
         return pagedResult;
-
     }
 
 
@@ -57,7 +56,6 @@ public class UserService {
             newUser.setPassword(GetUser(id).getPassword());  //JPA is a terrible ORM https://stackoverflow.com/questions/28595391/how-to-do-not-update-attributes-of-an-entry-if-such-value-is-null-jpa
         }
         return userRepository.save(newUser);
-
     }
 
 

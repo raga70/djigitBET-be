@@ -2,15 +2,13 @@ package com.djigitbet.djigitbet.Model.Entity;
 
 import javax.persistence.*;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Casino {
     @Id
@@ -18,6 +16,4 @@ public class Casino {
     double casinoFunds;
     double jackpot;
     double totalWinCoefficient;
-
-
 }

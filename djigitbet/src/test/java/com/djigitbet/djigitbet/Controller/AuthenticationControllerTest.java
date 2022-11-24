@@ -4,10 +4,12 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
 import com.djigitbet.djigitbet.Model.DTO.EditPlayerRequestDTO;
+import com.djigitbet.djigitbet.Model.Entity.Player;
 import com.djigitbet.djigitbet.Model.Entity.User;
 import com.djigitbet.djigitbet.Model.Entity.UserType;
 import com.djigitbet.djigitbet.Services.AuthenticationManagerUserService;
 import com.djigitbet.djigitbet.Services.UserService;
+import com.djigitbet.djigitbet.security.Entity.LoginCredentials;
 import com.djigitbet.djigitbet.security.JWTUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -41,6 +43,192 @@ class AuthenticationControllerTest {
 
     @MockBean
     private UserService userService;
+
+    /**
+     * Method under test: {@link AuthenticationController#getToken(LoginCredentials)}
+     */
+    @Test
+    void testGetToken() throws Exception {
+        when(authenticationManagerUserService.Login((String) any(), (String) any())).thenReturn(true);
+        when(jWTUtil.createJWT((User) any())).thenReturn("Create JWT");
+
+        User user = new User();
+        user.setPassword("iloveyou");
+        user.setType(UserType.PLAYER);
+        user.setUserID(1);
+        user.setUsername("janedoe");
+        when(userService.GetUser((String) any())).thenReturn(user);
+
+        LoginCredentials loginCredentials = new LoginCredentials();
+        loginCredentials.setPassword("iloveyou");
+        loginCredentials.setUsername("janedoe");
+        String content = (new ObjectMapper()).writeValueAsString(loginCredentials);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/authenticate/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content);
+        MockMvcBuilders.standaloneSetup(authenticationController)
+                .build()
+                .perform(requestBuilder)
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.content()
+                        .string(
+                                "{\"userID\":1,\"type\":\"PLAYER\",\"username\":\"janedoe\",\"name\":null,\"surname\":null,\"nationalIDNumber\":null,"
+                                        + "\"email\":null,\"phoneNumber\":null,\"winCoefficient\":0.0,\"balance\":0.0}"));
+    }
+
+    /**
+     * Method under test: {@link AuthenticationController#getToken(LoginCredentials)}
+     */
+    @Test
+    void testGetToken2() throws Exception {
+        when(authenticationManagerUserService.Login((String) any(), (String) any())).thenReturn(false);
+        when(jWTUtil.createJWT((User) any())).thenReturn("Create JWT");
+
+        User user = new User();
+        user.setPassword("iloveyou");
+        user.setType(UserType.PLAYER);
+        user.setUserID(1);
+        user.setUsername("janedoe");
+        when(userService.GetUser((String) any())).thenReturn(user);
+
+        LoginCredentials loginCredentials = new LoginCredentials();
+        loginCredentials.setPassword("iloveyou");
+        loginCredentials.setUsername("janedoe");
+        String content = (new ObjectMapper()).writeValueAsString(loginCredentials);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/authenticate/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content);
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(authenticationController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().is(400));
+    }
+
+    /**
+     * Method under test: {@link AuthenticationController#getToken(LoginCredentials)}
+     */
+    @Test
+    void testGetToken3() throws Exception {
+        when(authenticationManagerUserService.Login((String) any(), (String) any())).thenReturn(true);
+        when(jWTUtil.createJWT((User) any())).thenReturn("?");
+
+        User user = new User();
+        user.setPassword("iloveyou");
+        user.setType(UserType.PLAYER);
+        user.setUserID(1);
+        user.setUsername("janedoe");
+        when(userService.GetUser((String) any())).thenReturn(user);
+
+        LoginCredentials loginCredentials = new LoginCredentials();
+        loginCredentials.setPassword("iloveyou");
+        loginCredentials.setUsername("janedoe");
+        String content = (new ObjectMapper()).writeValueAsString(loginCredentials);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/authenticate/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content);
+        MockMvcBuilders.standaloneSetup(authenticationController)
+                .build()
+                .perform(requestBuilder)
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.content()
+                        .string(
+                                "{\"userID\":1,\"type\":\"PLAYER\",\"username\":\"janedoe\",\"name\":null,\"surname\":null,\"nationalIDNumber\":null,"
+                                        + "\"email\":null,\"phoneNumber\":null,\"winCoefficient\":0.0,\"balance\":0.0}"));
+    }
+
+    /**
+     * Method under test: {@link AuthenticationController#getToken(LoginCredentials)}
+     */
+    @Test
+    void testGetToken4() throws Exception {
+        when(authenticationManagerUserService.Login((String) any(), (String) any())).thenReturn(true);
+        when(jWTUtil.createJWT((User) any())).thenReturn("Create JWT");
+
+        Player player = new Player();
+        player.setBalance(10.0d);
+        player.setEmail("jane.doe@example.org");
+        player.setFundsLost(10.0d);
+        player.setFundsPayedOut(10.0d);
+        player.setName("?");
+        player.setNationalIDNumber("42");
+        player.setPassword("iloveyou");
+        player.setPhoneNumber("4105551212");
+        player.setSurname("Doe");
+        player.setType(UserType.PLAYER);
+        player.setUserID(1);
+        player.setUsername("janedoe");
+        player.setWinCoefficient(10.0d);
+        player.setPassword("iloveyou");
+        player.setType(UserType.PLAYER);
+        player.setUserID(1);
+        player.setUsername("janedoe");
+        when(userService.GetUser((String) any())).thenReturn(player);
+
+        LoginCredentials loginCredentials = new LoginCredentials();
+        loginCredentials.setPassword("iloveyou");
+        loginCredentials.setUsername("janedoe");
+        String content = (new ObjectMapper()).writeValueAsString(loginCredentials);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/authenticate/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content);
+        MockMvcBuilders.standaloneSetup(authenticationController)
+                .build()
+                .perform(requestBuilder)
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.content()
+                        .string(
+                                "{\"userID\":1,\"type\":\"PLAYER\",\"username\":\"janedoe\",\"name\":\"?\",\"surname\":\"Doe\",\"nationalIDNumber\":\"42\","
+                                        + "\"email\":\"jane.doe@example.org\",\"phoneNumber\":\"4105551212\",\"winCoefficient\":10.0,\"balance\":10.0}"));
+    }
+
+    /**
+     * Method under test: {@link AuthenticationController#getToken(LoginCredentials)}
+     */
+    @Test
+    void testGetToken5() throws Exception {
+        when(authenticationManagerUserService.Login((String) any(), (String) any())).thenReturn(true);
+        when(jWTUtil.createJWT((User) any())).thenReturn("Create JWT");
+
+        Player player = new Player();
+        player.setBalance(10.0d);
+        player.setEmail("?");
+        player.setFundsLost(10.0d);
+        player.setFundsPayedOut(10.0d);
+        player.setName("?");
+        player.setNationalIDNumber("42");
+        player.setPassword("iloveyou");
+        player.setPhoneNumber("4105551212");
+        player.setSurname("Doe");
+        player.setType(UserType.PLAYER);
+        player.setUserID(1);
+        player.setUsername("janedoe");
+        player.setWinCoefficient(10.0d);
+        player.setPassword("iloveyou");
+        player.setType(UserType.PLAYER);
+        player.setUserID(1);
+        player.setUsername("janedoe");
+        when(userService.GetUser((String) any())).thenReturn(player);
+
+        LoginCredentials loginCredentials = new LoginCredentials();
+        loginCredentials.setPassword("iloveyou");
+        loginCredentials.setUsername("janedoe");
+        String content = (new ObjectMapper()).writeValueAsString(loginCredentials);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/authenticate/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content);
+        MockMvcBuilders.standaloneSetup(authenticationController)
+                .build()
+                .perform(requestBuilder)
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.content()
+                        .string(
+                                "{\"userID\":1,\"type\":\"PLAYER\",\"username\":\"janedoe\",\"name\":\"?\",\"surname\":\"Doe\",\"nationalIDNumber\":\"42\","
+                                        + "\"email\":\"?\",\"phoneNumber\":\"4105551212\",\"winCoefficient\":10.0,\"balance\":10.0}"));
+    }
 
     /**
      * Method under test: {@link AuthenticationController#SaveUser(EditPlayerRequestDTO)}

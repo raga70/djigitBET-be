@@ -22,7 +22,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     private static final String TOKEN_PREFIX = "Bearer ";
     private final UserDetailsService userDetailsService;
     private final String secret;
-
+    
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager,
                                   UserDetailsService userDetailsService,
                                   String secret) {
@@ -32,7 +32,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+        protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws IOException, ServletException {
         UsernamePasswordAuthenticationToken auth = getAuthentication(request);
         if (auth == null) {

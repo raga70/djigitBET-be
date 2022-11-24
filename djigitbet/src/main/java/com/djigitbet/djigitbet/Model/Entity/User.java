@@ -4,6 +4,7 @@ package com.djigitbet.djigitbet.Model.Entity;
 import com.djigitbet.djigitbet.Model.DTO.EditUserRequestDTO;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,14 +20,12 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-
+@Builder
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userID;
 
-
-   
      //@Enumerated(EnumType.STRING)
     private UserType type; //required so i can define what kind of object need to be created after the json file has been received by the controller
 

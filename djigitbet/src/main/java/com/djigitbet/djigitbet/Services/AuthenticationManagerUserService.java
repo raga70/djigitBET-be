@@ -10,16 +10,18 @@ import java.util.Objects;
 
 @Service
 public class AuthenticationManagerUserService {
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
     private IUserRepository userRepository;
-
+    
+    public AuthenticationManagerUserService(PasswordEncoder encoder, IUserRepository userRepository) {
+        this.passwordEncoder = encoder;
+        this.userRepository = userRepository;
+    }
+        
     public boolean Login(String username, String password) {
 
         User user = userRepository.findByUsername(username).get(0);
-
 
         if (user != null) {
             if (Objects.equals(password, user.getPassword())) { //update pass (hash)
@@ -31,7 +33,7 @@ public class AuthenticationManagerUserService {
         }
         return false;
     }
-
+    
 
     public boolean Register(User user) {
         if (userRepository.findByUsername(user.getUsername()).size() == 0) {

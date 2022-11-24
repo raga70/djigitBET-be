@@ -20,8 +20,7 @@ public class EditPlayerRequestDTO extends EditUserRequestDTO {
     private String nationalIDNumber;
     @NotBlank
     @Email
-    private String email;
-
+    private String email;   
     @NotBlank
     private String phoneNumber;
 

@@ -38,6 +38,21 @@ class SlotsControllerTest {
     private UserService userService;
 
     /**
+     * Method under test: {@link SlotsController#getJackpot()}
+     */
+    @Test
+    void testGetJackpot() throws Exception {
+        when(slotEngine.getJackpot()).thenReturn(10.0d);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/slots/jackpot");
+        MockMvcBuilders.standaloneSetup(slotsController)
+                .build()
+                .perform(requestBuilder)
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.content().string("10.0"));
+    }
+
+    /**
      * Method under test: {@link SlotsController#PlaceBet(String, placeBetDTO)}
      */
     @Test

@@ -29,7 +29,7 @@ public class JWTUtil {
     @Value("${jwt.issuer}")
     private String issuer;
     @Value("${jwt.secret}")
-    private String secret;
+    private String secret;      
     @Value("${jwt.audience}")
     private String audience;
     @Value("${jwt.ttl-in-seconds}")
@@ -63,7 +63,7 @@ public class JWTUtil {
                         .setExpiration(Date.from(Instant.now().plus(Duration.ofSeconds(timeToLiveInSeconds))))
                         .claim(CLAIM_USERNAME_KEY, user.getUsername())
                         .claim(CLAIM_USERID_KEY, user.getUserID())
-                        .signWith(secretKey)
+                            .signWith(secretKey)
                         .compact();
         return jwt;
     }
