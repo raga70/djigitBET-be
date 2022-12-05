@@ -12,6 +12,7 @@ buildntest:
         - ls
         - cd djigitbet
         - chmod +x gradlew
+        - ls
         - ./gradlew assemble
         - ./gradlew test
         
