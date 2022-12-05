@@ -5,7 +5,7 @@ stages:
 
 
 buildntest:
-    image: gradle:7.4.2-jdk18
+    image: gradle:7.4.2-jdk17
     stage: buildntest
     script:
         - echo "the ci pipline works" > test.txt
