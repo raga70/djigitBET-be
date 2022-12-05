@@ -31,7 +31,7 @@ deploy:
         - ls -l
     script: 
         - ssh -o StrictHostKeyChecking=no -i $SSH_KEY  raga70@20.203.252.102 "
-            whoami && ls && cd djigitbet/ && git pull &&
+            whoami && ls && cd djgitbet/djigitbet && git pull &&
             docker login -u raga70 -p Zzax9js2Erfevvv &&
             docker pull raga70/djigitbetfe:latest &&
             docker-compose down && docker-compose up -d --build"
