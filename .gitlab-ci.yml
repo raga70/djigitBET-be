@@ -26,7 +26,7 @@ buildntest:
 
 deploy:
     stage: deploy
-    before-script:
+    before_script:
         - chmod 400 $SSH_KEY
         - ls -l
     script: 
