@@ -26,6 +26,9 @@ buildntest:
 
 deploy:
     stage: deploy
+    before-script:
+        - chmod 400 $SSH_KEY
+        - ls -l
     script: 
         - ssh -o StrictHostKeyChecking=no -i $SSH_KEY  raga70@20.203.252.102 "
             cd djigitbet/ && git pull &&
