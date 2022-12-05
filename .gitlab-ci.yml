@@ -33,6 +33,7 @@ deploy:
         - ssh -o StrictHostKeyChecking=no -i $SSH_KEY  raga70@20.203.252.102 "
             whoami && ls && cd djgitbet/djigitbet && git pull &&
             echo "Zzax9js2Erfevvv" | docker login --username raga70 --password-stdin &&
+            chmod +x gradlew && sed -i -e 's/\r$//' gradlew && ./gradlew assemble &&
             docker pull raga70/djigitbetfe:latest &&
             docker-compose down && docker-compose up -d --build"
     
