@@ -1,8 +1,7 @@
 package com.djigitbet.djigitbet.Services;
 
-import com.djigitbet.djigitbet.DataAcessLayer.IUserRepository;
+import com.djigitbet.djigitbet.Repositories.IUserRepository;
 import com.djigitbet.djigitbet.Model.Entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

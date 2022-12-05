@@ -1,0 +1,43 @@
+version: "3"
+services:
+  djigitbe:
+    ports:
+      - "8000:8000"
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - bedb
+    restart: always
+    networks:
+        jjt:
+            ipv4_address: 10.56.1.2
+  bedb:
+    image: mysql:5.7
+    environment:
+      MQSQL_DATABASE: djigitbetlc
+      MYSQL_ROOT_PASSWORD: 12345678
+    volumes:
+      - ./mysql:/var/lib/mysql
+    restart: always
+    networks:
+        jjt:
+            ipv4_address: 10.56.1.3
+
+  fe:
+    image: raga70/djigitbetfe:latest
+    ports:
+      - "3000:3000"
+    restart: always
+    depends_on:
+      - djigitbe
+    networks:
+        jjt:
+            ipv4_address: 10.56.1.4
+
+networks:
+    jjt:
+      ipam:
+        driver: default
+        config:
+        - subnet: "10.56.1.0/24"

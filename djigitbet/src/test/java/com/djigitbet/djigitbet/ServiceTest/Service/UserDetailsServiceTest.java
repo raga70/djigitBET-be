@@ -23,8 +23,11 @@ public class UserDetailsServiceTest {
     
     @Test
     public void loadUserByUsername_pass(){
+        //Act
         Mockito.when(userService.GetUser(Mockito.any()))
                 .thenReturn(User.builder().username("test").type(UserType.PLAYER).userID(1).password("pw").build());
+        
+        //Assert
         assertNotNull(userDetailsService.loadUserByUsername("test"));
     }
 }

@@ -34,18 +34,16 @@ class UnprivilegedUserControllerTest {
     @MockBean
     private UserService userService;
 
-    /**
-     * Method under test: {@link UnprivilegedUserController#UpdateUser(String, EditPlayerRequestDTO)}
-     */
-    @Test
-    void testUpdateUser() throws Exception {
+    private User createUser(){
         User user = new User();
         user.setPassword("iloveyou");
         user.setType(UserType.PLAYER);
         user.setUserID(1);
         user.setUsername("janedoe");
-        when(userService.GetUser(anyInt())).thenReturn(user);
+        return user;
+    }
 
+    private EditPlayerRequestDTO createEditPlayerRequestDTO(){
         EditPlayerRequestDTO editPlayerRequestDTO = new EditPlayerRequestDTO();
         editPlayerRequestDTO.setEmail("jane.doe@example.org");
         editPlayerRequestDTO.setName("Name");
@@ -56,11 +54,23 @@ class UnprivilegedUserControllerTest {
         editPlayerRequestDTO.setType(UserType.PLAYER);
         editPlayerRequestDTO.setUserID(1);
         editPlayerRequestDTO.setUsername("janedoe");
-        String content = (new ObjectMapper()).writeValueAsString(editPlayerRequestDTO);
+        return editPlayerRequestDTO;
+    }
+
+    /**
+     * Method under test: {@link UnprivilegedUserController#UpdateUser(String, EditPlayerRequestDTO)}
+     */
+    @Test
+    void testUpdateUser() throws Exception {
+        when(userService.GetUser(anyInt())).thenReturn(createUser());
+
+        String content = (new ObjectMapper()).writeValueAsString(createEditPlayerRequestDTO());
+        
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/unpriviligeduser/")
                 .header("Authorization", "Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
+        
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(unprivilegedUserController)
                 .build()
                 .perform(requestBuilder);
@@ -74,28 +84,20 @@ class UnprivilegedUserControllerTest {
      */
     @Test
     void testUpdateUser2() throws Exception {
-        User user = new User();
-        user.setPassword("iloveyou");
+        //Arrange
+        User user = createUser();
+        String content = (new ObjectMapper()).writeValueAsString(createEditPlayerRequestDTO());
+        
+        //Act
         user.setType(UserType.ADMIN);
-        user.setUserID(1);
-        user.setUsername("janedoe");
         when(userService.GetUser(anyInt())).thenReturn(user);
 
-        EditPlayerRequestDTO editPlayerRequestDTO = new EditPlayerRequestDTO();
-        editPlayerRequestDTO.setEmail("jane.doe@example.org");
-        editPlayerRequestDTO.setName("Name");
-        editPlayerRequestDTO.setNationalIDNumber("42");
-        editPlayerRequestDTO.setPassword("iloveyou");
-        editPlayerRequestDTO.setPhoneNumber("4105551212");
-        editPlayerRequestDTO.setSurname("Doe");
-        editPlayerRequestDTO.setType(UserType.PLAYER);
-        editPlayerRequestDTO.setUserID(1);
-        editPlayerRequestDTO.setUsername("janedoe");
-        String content = (new ObjectMapper()).writeValueAsString(editPlayerRequestDTO);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/unpriviligeduser/")
                 .header("Authorization", "Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
+
+        //Assert
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(unprivilegedUserController)
                 .build()
                 .perform(requestBuilder);

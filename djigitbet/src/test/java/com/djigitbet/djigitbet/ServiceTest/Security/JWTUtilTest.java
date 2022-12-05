@@ -42,13 +42,20 @@ public class JWTUtilTest {
     
     @Test
     public void setUpSecretKey_pass(){
+        
+        //Assert
         assertNotNull(secretKey);
     }
     
     @Test
     public void createJWT_pass(){
+        //Arrange
         User user = User.builder().username("test").password("test").build();
+        
+        //Act
         jwtUtil.setUpSecretKey();
+        
+        //Assert
         assertNotNull(jwtUtil.createJWT(user));
     }
     

@@ -35,19 +35,45 @@ class UserControllerTest {
 
     @MockBean
     private UserService userService;
+    
+    private ArrayList<User> users = new ArrayList<User>();
+    
+    private ArrayList<Player> players = new ArrayList<Player>();
+    
+    private void addUsers() {
+    	User user = createUser();
+        User user2 = createUser();
+    	users.add(user);
+        users.add(user2);
+    }
+    
+    private void addUser(){
+        User user = createUser();
+        users.add(user);
+    }
+    
+    private void addPlayers(){
+        Player player = createPlayer();
+        Player player2 = createPlayer();
+        players.add(player);
+        players.add(player2);
+    }
+    
+    private void addPlayer(){
+        Player player = createPlayer();
+        players.add(player);
+    }
 
-    /**
-     * Method under test: {@link UserController#SaveUser(EditPlayerRequestDTO)}
-     */
-    @Test
-    void testSaveUser() throws Exception {
+    private User createUser(){
         User user = new User();
         user.setPassword("iloveyou");
         user.setType(UserType.PLAYER);
         user.setUserID(1);
         user.setUsername("janedoe");
-        when(userService.SaveUser((User) any())).thenReturn(user);
+        return user;
+    }
 
+    private EditPlayerRequestDTO createEditPlayerRequestDTO(){
         EditPlayerRequestDTO editPlayerRequestDTO = new EditPlayerRequestDTO();
         editPlayerRequestDTO.setEmail("jane.doe@example.org");
         editPlayerRequestDTO.setName("Name");
@@ -58,10 +84,46 @@ class UserControllerTest {
         editPlayerRequestDTO.setType(UserType.PLAYER);
         editPlayerRequestDTO.setUserID(1);
         editPlayerRequestDTO.setUsername("janedoe");
-        String content = (new ObjectMapper()).writeValueAsString(editPlayerRequestDTO);
+        return editPlayerRequestDTO;
+    }
+
+    private Player createPlayer(){
+        Player player = new Player();
+        player.setBalance(10.0d);
+        player.setEmail("jane.doe@example.org");
+        player.setFundsLost(10.0d);
+        player.setFundsPayedOut(10.0d);
+        player.setName("?");
+        player.setNationalIDNumber("42");
+        player.setPassword("iloveyou");
+        player.setPhoneNumber("4105551212");
+        player.setSurname("Doe");
+        player.setType(UserType.PLAYER);
+        player.setUserID(1);
+        player.setUsername("janedoe");
+        player.setWinCoefficient(10.0d);
+        player.setPassword("iloveyou");
+        player.setType(UserType.PLAYER);
+        player.setUserID(1);
+        player.setUsername("janedoe");
+        return player;
+    }
+
+    /**
+     * Method under test: {@link UserController#SaveUser(EditPlayerRequestDTO)}
+     */
+    @Test
+    void testSaveUser() throws Exception {
+        //Arrange
+        String content = (new ObjectMapper()).writeValueAsString(createEditPlayerRequestDTO());
+        
+        //Act
+        when(userService.SaveUser(any())).thenReturn(createUser());
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/user/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
+        
+        //Assert
         MockMvcBuilders.standaloneSetup(userController)
                 .build()
                 .perform(requestBuilder)
@@ -75,27 +137,19 @@ class UserControllerTest {
      */
     @Test
     void testSaveUser2() throws Exception {
-        User user = new User();
-        user.setPassword("iloveyou");
-        user.setType(UserType.PLAYER);
-        user.setUserID(1);
-        user.setUsername("janedoe");
-        when(userService.SaveUser((User) any())).thenReturn(user);
-
-        EditPlayerRequestDTO editPlayerRequestDTO = new EditPlayerRequestDTO();
+        //Arrange
+        EditPlayerRequestDTO editPlayerRequestDTO = createEditPlayerRequestDTO();
         editPlayerRequestDTO.setEmail("?");
-        editPlayerRequestDTO.setName("Name");
-        editPlayerRequestDTO.setNationalIDNumber("42");
-        editPlayerRequestDTO.setPassword("iloveyou");
-        editPlayerRequestDTO.setPhoneNumber("4105551212");
-        editPlayerRequestDTO.setSurname("Doe");
-        editPlayerRequestDTO.setType(UserType.PLAYER);
-        editPlayerRequestDTO.setUserID(1);
-        editPlayerRequestDTO.setUsername("janedoe");
+
+        //Act
+        when(userService.SaveUser(any())).thenReturn(createUser());
         String content = (new ObjectMapper()).writeValueAsString(editPlayerRequestDTO);
+        
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/user/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
+        
+        //Assert
         MockMvcBuilders.standaloneSetup(userController)
                 .build()
                 .perform(requestBuilder)
@@ -109,27 +163,19 @@ class UserControllerTest {
      */
     @Test
     void testSaveUser3() throws Exception {
-        User user = new User();
-        user.setPassword("iloveyou");
-        user.setType(UserType.PLAYER);
-        user.setUserID(1);
-        user.setUsername("janedoe");
-        when(userService.SaveUser((User) any())).thenReturn(user);
-
-        EditPlayerRequestDTO editPlayerRequestDTO = new EditPlayerRequestDTO();
-        editPlayerRequestDTO.setEmail("jane.doe@example.org");
-        editPlayerRequestDTO.setName("Name");
-        editPlayerRequestDTO.setNationalIDNumber("42");
-        editPlayerRequestDTO.setPassword("iloveyou");
-        editPlayerRequestDTO.setPhoneNumber("4105551212");
-        editPlayerRequestDTO.setSurname("Doe");
+        //Arrange
+        EditPlayerRequestDTO editPlayerRequestDTO = createEditPlayerRequestDTO();
         editPlayerRequestDTO.setType(UserType.ADMIN);
-        editPlayerRequestDTO.setUserID(1);
-        editPlayerRequestDTO.setUsername("janedoe");
         String content = (new ObjectMapper()).writeValueAsString(editPlayerRequestDTO);
+
+        //Act
+        when(userService.SaveUser(any())).thenReturn(createUser());
+        
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/user/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
+        
+        //Assert
         MockMvcBuilders.standaloneSetup(userController)
                 .build()
                 .perform(requestBuilder)
@@ -143,8 +189,11 @@ class UserControllerTest {
      */
     @Test
     void testGetAllUsers() throws Exception {
+        //Act
         when(userService.GetAllUsers()).thenReturn(new ArrayList<>());
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/user/");
+
+        //Assert
         MockMvcBuilders.standaloneSetup(userController)
                 .build()
                 .perform(requestBuilder)
@@ -158,16 +207,12 @@ class UserControllerTest {
      */
     @Test
     void testGetAllUsers2() throws Exception {
-        User user = new User();
-        user.setPassword("iloveyou");
-        user.setType(UserType.PLAYER);
-        user.setUserID(1);
-        user.setUsername("janedoe");
-
-        ArrayList<User> userList = new ArrayList<>();
-        userList.add(user);
-        when(userService.GetAllUsers()).thenReturn(userList);
+        //Act
+        addUser();
+        when(userService.GetAllUsers()).thenReturn(users);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/user/");
+        
+        //Assert
         MockMvcBuilders.standaloneSetup(userController)
                 .build()
                 .perform(requestBuilder)
@@ -184,23 +229,12 @@ class UserControllerTest {
      */
     @Test
     void testGetAllUsers3() throws Exception {
-        User user = new User();
-        user.setPassword("iloveyou");
-        user.setType(UserType.PLAYER);
-        user.setUserID(1);
-        user.setUsername("janedoe");
-
-        User user1 = new User();
-        user1.setPassword("iloveyou");
-        user1.setType(UserType.PLAYER);
-        user1.setUserID(1);
-        user1.setUsername("janedoe");
-
-        ArrayList<User> userList = new ArrayList<>();
-        userList.add(user1);
-        userList.add(user);
-        when(userService.GetAllUsers()).thenReturn(userList);
+        //Act
+        addUsers();
+        when(userService.GetAllUsers()).thenReturn(users);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/user/");
+        
+        //Assert
         MockMvcBuilders.standaloneSetup(userController)
                 .build()
                 .perform(requestBuilder)
@@ -219,13 +253,11 @@ class UserControllerTest {
      */
     @Test
     void testGetUser() throws Exception {
-        User user = new User();
-        user.setPassword("iloveyou");
-        user.setType(UserType.PLAYER);
-        user.setUserID(1);
-        user.setUsername("janedoe");
-        when(userService.GetUser(anyInt())).thenReturn(user);
+        //Act
+        when(userService.GetUser(anyInt())).thenReturn(createUser());
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/user/{id}", 1);
+        
+        //Assert
         MockMvcBuilders.standaloneSetup(userController)
                 .build()
                 .perform(requestBuilder)
@@ -242,26 +274,11 @@ class UserControllerTest {
      */
     @Test
     void testGetUser2() throws Exception {
-        Player player = new Player();
-        player.setBalance(10.0d);
-        player.setEmail("jane.doe@example.org");
-        player.setFundsLost(10.0d);
-        player.setFundsPayedOut(10.0d);
-        player.setName("?");
-        player.setNationalIDNumber("42");
-        player.setPassword("iloveyou");
-        player.setPhoneNumber("4105551212");
-        player.setSurname("Doe");
-        player.setType(UserType.PLAYER);
-        player.setUserID(1);
-        player.setUsername("janedoe");
-        player.setWinCoefficient(10.0d);
-        player.setPassword("iloveyou");
-        player.setType(UserType.PLAYER);
-        player.setUserID(1);
-        player.setUsername("janedoe");
-        when(userService.GetUser(anyInt())).thenReturn(player);
+        //Act
+        when(userService.GetUser(anyInt())).thenReturn(createPlayer());
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/user/{id}", 1);
+        
+        //Assert
         MockMvcBuilders.standaloneSetup(userController)
                 .build()
                 .perform(requestBuilder)
@@ -278,26 +295,15 @@ class UserControllerTest {
      */
     @Test
     void testGetUser3() throws Exception {
-        Player player = new Player();
-        player.setBalance(10.0d);
+        //Arrange
+        Player player = createPlayer();
+        
+        //Act
         player.setEmail("?");
-        player.setFundsLost(10.0d);
-        player.setFundsPayedOut(10.0d);
-        player.setName("?");
-        player.setNationalIDNumber("42");
-        player.setPassword("iloveyou");
-        player.setPhoneNumber("4105551212");
-        player.setSurname("Doe");
-        player.setType(UserType.PLAYER);
-        player.setUserID(1);
-        player.setUsername("janedoe");
-        player.setWinCoefficient(10.0d);
-        player.setPassword("iloveyou");
-        player.setType(UserType.PLAYER);
-        player.setUserID(1);
-        player.setUsername("janedoe");
         when(userService.GetUser(anyInt())).thenReturn(player);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/user/{id}", 1);
+        
+        //Assert
         MockMvcBuilders.standaloneSetup(userController)
                 .build()
                 .perform(requestBuilder)
@@ -314,27 +320,16 @@ class UserControllerTest {
      */
     @Test
     void testUpdateUser() throws Exception {
-        User user = new User();
-        user.setPassword("iloveyou");
-        user.setType(UserType.PLAYER);
-        user.setUserID(1);
-        user.setUsername("janedoe");
-        when(userService.UpdateUser((User) any(), anyInt())).thenReturn(user);
+        //Arrange
+        String content = (new ObjectMapper()).writeValueAsString(createEditPlayerRequestDTO());
 
-        EditPlayerRequestDTO editPlayerRequestDTO = new EditPlayerRequestDTO();
-        editPlayerRequestDTO.setEmail("jane.doe@example.org");
-        editPlayerRequestDTO.setName("Name");
-        editPlayerRequestDTO.setNationalIDNumber("42");
-        editPlayerRequestDTO.setPassword("iloveyou");
-        editPlayerRequestDTO.setPhoneNumber("4105551212");
-        editPlayerRequestDTO.setSurname("Doe");
-        editPlayerRequestDTO.setType(UserType.PLAYER);
-        editPlayerRequestDTO.setUserID(1);
-        editPlayerRequestDTO.setUsername("janedoe");
-        String content = (new ObjectMapper()).writeValueAsString(editPlayerRequestDTO);
+        //Act
+        when(userService.UpdateUser(any(), anyInt())).thenReturn(createUser());
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/user/{id}", 1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
+
+        //Assert
         MockMvcBuilders.standaloneSetup(userController)
                 .build()
                 .perform(requestBuilder)
@@ -351,40 +346,16 @@ class UserControllerTest {
      */
     @Test
     void testUpdateUser2() throws Exception {
-        Player player = new Player();
-        player.setBalance(10.0d);
-        player.setEmail("jane.doe@example.org");
-        player.setFundsLost(10.0d);
-        player.setFundsPayedOut(10.0d);
-        player.setName("?");
-        player.setNationalIDNumber("42");
-        player.setPassword("iloveyou");
-        player.setPhoneNumber("4105551212");
-        player.setSurname("Doe");
-        player.setType(UserType.PLAYER);
-        player.setUserID(1);
-        player.setUsername("janedoe");
-        player.setWinCoefficient(10.0d);
-        player.setPassword("iloveyou");
-        player.setType(UserType.PLAYER);
-        player.setUserID(1);
-        player.setUsername("janedoe");
-        when(userService.UpdateUser((User) any(), anyInt())).thenReturn(player);
-
-        EditPlayerRequestDTO editPlayerRequestDTO = new EditPlayerRequestDTO();
-        editPlayerRequestDTO.setEmail("jane.doe@example.org");
-        editPlayerRequestDTO.setName("Name");
-        editPlayerRequestDTO.setNationalIDNumber("42");
-        editPlayerRequestDTO.setPassword("iloveyou");
-        editPlayerRequestDTO.setPhoneNumber("4105551212");
-        editPlayerRequestDTO.setSurname("Doe");
-        editPlayerRequestDTO.setType(UserType.PLAYER);
-        editPlayerRequestDTO.setUserID(1);
-        editPlayerRequestDTO.setUsername("janedoe");
-        String content = (new ObjectMapper()).writeValueAsString(editPlayerRequestDTO);
+        //Arrange
+        String content = (new ObjectMapper()).writeValueAsString(createEditPlayerRequestDTO());
+        
+        //Act
+        when(userService.UpdateUser(any(), anyInt())).thenReturn(createPlayer());
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/user/{id}", 1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
+        
+        //Assert
         MockMvcBuilders.standaloneSetup(userController)
                 .build()
                 .perform(requestBuilder)
@@ -401,27 +372,19 @@ class UserControllerTest {
      */
     @Test
     void testUpdateUser3() throws Exception {
-        User user = new User();
-        user.setPassword("iloveyou");
-        user.setType(UserType.PLAYER);
-        user.setUserID(1);
-        user.setUsername("janedoe");
-        when(userService.UpdateUser((User) any(), anyInt())).thenReturn(user);
-
-        EditPlayerRequestDTO editPlayerRequestDTO = new EditPlayerRequestDTO();
-        editPlayerRequestDTO.setEmail("?");
-        editPlayerRequestDTO.setName("Name");
-        editPlayerRequestDTO.setNationalIDNumber("42");
-        editPlayerRequestDTO.setPassword("iloveyou");
-        editPlayerRequestDTO.setPhoneNumber("4105551212");
-        editPlayerRequestDTO.setSurname("Doe");
-        editPlayerRequestDTO.setType(UserType.PLAYER);
-        editPlayerRequestDTO.setUserID(1);
-        editPlayerRequestDTO.setUsername("janedoe");
+        //Arrange
+        EditPlayerRequestDTO editPlayerRequestDTO = createEditPlayerRequestDTO();
         String content = (new ObjectMapper()).writeValueAsString(editPlayerRequestDTO);
+
+        //Act
+        when(userService.UpdateUser(any(), anyInt())).thenReturn(createUser());
+        editPlayerRequestDTO.setEmail("?");
+  
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/user/{id}", 1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
+        
+        //Assert
         MockMvcBuilders.standaloneSetup(userController)
                 .build()
                 .perform(requestBuilder)
@@ -433,27 +396,17 @@ class UserControllerTest {
      */
     @Test
     void testUpdateUser4() throws Exception {
-        User user = new User();
-        user.setPassword("iloveyou");
-        user.setType(UserType.PLAYER);
-        user.setUserID(1);
-        user.setUsername("janedoe");
-        when(userService.UpdateUser((User) any(), anyInt())).thenReturn(user);
+        //Arrange
+        String content = (new ObjectMapper()).writeValueAsString(createEditPlayerRequestDTO());
 
-        EditPlayerRequestDTO editPlayerRequestDTO = new EditPlayerRequestDTO();
-        editPlayerRequestDTO.setEmail("jane.doe@example.org");
-        editPlayerRequestDTO.setName("Name");
-        editPlayerRequestDTO.setNationalIDNumber("42");
-        editPlayerRequestDTO.setPassword("iloveyou");
-        editPlayerRequestDTO.setPhoneNumber("4105551212");
-        editPlayerRequestDTO.setSurname("Doe");
-        editPlayerRequestDTO.setType(UserType.ADMIN);
-        editPlayerRequestDTO.setUserID(1);
-        editPlayerRequestDTO.setUsername("janedoe");
-        String content = (new ObjectMapper()).writeValueAsString(editPlayerRequestDTO);
+        //Act
+        when(userService.UpdateUser(any(), anyInt())).thenReturn(createUser());
+        
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/user/{id}", 1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
+        
+        //Assert
         MockMvcBuilders.standaloneSetup(userController)
                 .build()
                 .perform(requestBuilder)
@@ -470,40 +423,20 @@ class UserControllerTest {
      */
     @Test
     void testUpdateUser5() throws Exception {
-        Player player = new Player();
-        player.setBalance(10.0d);
+        //Arrange        
+        Player player = createPlayer();
+        String content = (new ObjectMapper()).writeValueAsString(createEditPlayerRequestDTO());
+        
+        //Act
         player.setEmail("?");
-        player.setFundsLost(10.0d);
-        player.setFundsPayedOut(10.0d);
         player.setName("?");
-        player.setNationalIDNumber("42");
-        player.setPassword("iloveyou");
-        player.setPhoneNumber("4105551212");
-        player.setSurname("Doe");
-        player.setType(UserType.PLAYER);
-        player.setUserID(1);
-        player.setUsername("janedoe");
-        player.setWinCoefficient(10.0d);
-        player.setPassword("iloveyou");
-        player.setType(UserType.PLAYER);
-        player.setUserID(1);
-        player.setUsername("janedoe");
-        when(userService.UpdateUser((User) any(), anyInt())).thenReturn(player);
+        when(userService.UpdateUser(any(), anyInt())).thenReturn(player);
 
-        EditPlayerRequestDTO editPlayerRequestDTO = new EditPlayerRequestDTO();
-        editPlayerRequestDTO.setEmail("jane.doe@example.org");
-        editPlayerRequestDTO.setName("Name");
-        editPlayerRequestDTO.setNationalIDNumber("42");
-        editPlayerRequestDTO.setPassword("iloveyou");
-        editPlayerRequestDTO.setPhoneNumber("4105551212");
-        editPlayerRequestDTO.setSurname("Doe");
-        editPlayerRequestDTO.setType(UserType.PLAYER);
-        editPlayerRequestDTO.setUserID(1);
-        editPlayerRequestDTO.setUsername("janedoe");
-        String content = (new ObjectMapper()).writeValueAsString(editPlayerRequestDTO);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/user/{id}", 1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
+        
+        //Assert        
         MockMvcBuilders.standaloneSetup(userController)
                 .build()
                 .perform(requestBuilder)
@@ -520,8 +453,11 @@ class UserControllerTest {
      */
     @Test
     void testDeleteUser() throws Exception {
+        //Act
         doNothing().when(userService).DeleteUser(anyInt());
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/user/{id}", 1);
+        
+        //Assert
         MockMvcBuilders.standaloneSetup(userController)
                 .build()
                 .perform(requestBuilder)
@@ -533,9 +469,12 @@ class UserControllerTest {
      */
     @Test
     void testDeleteUser2() throws Exception {
+        //Act        
         doNothing().when(userService).DeleteUser(anyInt());
         MockHttpServletRequestBuilder deleteResult = MockMvcRequestBuilders.delete("/user/{id}", 1);
         deleteResult.characterEncoding("Encoding");
+        
+        //Assert
         MockMvcBuilders.standaloneSetup(userController)
                 .build()
                 .perform(deleteResult)
@@ -547,9 +486,12 @@ class UserControllerTest {
      */
     @Test
     void testGetAllPlayersPagged() throws Exception {
-        when(userService.GetAllUsersPagged(anyInt(), anyInt(), (String) any())).thenReturn(new ArrayList<>());
+        //Act
+        when(userService.GetAllUsersPagged(anyInt(), anyInt(), any())).thenReturn(new ArrayList<>());
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get("/user/pagged/{pageNo}/{pageSize}/{sortBy}", 1, 3, "Sort By");
+        
+        //Assert
         MockMvcBuilders.standaloneSetup(userController)
                 .build()
                 .perform(requestBuilder)
@@ -563,26 +505,14 @@ class UserControllerTest {
      */
     @Test
     void testGetAllPlayersPagged2() throws Exception {
-        Player player = new Player();
-        player.setBalance(10.0d);
-        player.setEmail("jane.doe@example.org");
-        player.setFundsLost(10.0d);
-        player.setFundsPayedOut(10.0d);
-        player.setName("?");
-        player.setNationalIDNumber("42");
-        player.setPassword("iloveyou");
-        player.setPhoneNumber("4105551212");
-        player.setSurname("Doe");
-        player.setType(UserType.PLAYER);
-        player.setUserID(1);
-        player.setUsername("janedoe");
-        player.setWinCoefficient(10.0d);
-
-        ArrayList<Player> playerList = new ArrayList<>();
-        playerList.add(player);
-        when(userService.GetAllUsersPagged(anyInt(), anyInt(), (String) any())).thenReturn(playerList);
+        //Act
+        addPlayer();
+        when(userService.GetAllUsersPagged(anyInt(), anyInt(), (String) any())).thenReturn(players);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get("/user/pagged/{pageNo}/{pageSize}/{sortBy}", 1, 3, "Sort By");
+       
+       
+        //Assert
         MockMvcBuilders.standaloneSetup(userController)
                 .build()
                 .perform(requestBuilder)
@@ -600,42 +530,13 @@ class UserControllerTest {
      */
     @Test
     void testGetAllPlayersPagged3() throws Exception {
-        Player player = new Player();
-        player.setBalance(10.0d);
-        player.setEmail("jane.doe@example.org");
-        player.setFundsLost(10.0d);
-        player.setFundsPayedOut(10.0d);
-        player.setName("?");
-        player.setNationalIDNumber("42");
-        player.setPassword("iloveyou");
-        player.setPhoneNumber("4105551212");
-        player.setSurname("Doe");
-        player.setType(UserType.PLAYER);
-        player.setUserID(1);
-        player.setUsername("janedoe");
-        player.setWinCoefficient(10.0d);
-
-        Player player1 = new Player();
-        player1.setBalance(10.0d);
-        player1.setEmail("jane.doe@example.org");
-        player1.setFundsLost(10.0d);
-        player1.setFundsPayedOut(10.0d);
-        player1.setName("?");
-        player1.setNationalIDNumber("42");
-        player1.setPassword("iloveyou");
-        player1.setPhoneNumber("4105551212");
-        player1.setSurname("Doe");
-        player1.setType(UserType.PLAYER);
-        player1.setUserID(1);
-        player1.setUsername("janedoe");
-        player1.setWinCoefficient(10.0d);
-
-        ArrayList<Player> playerList = new ArrayList<>();
-        playerList.add(player1);
-        playerList.add(player);
-        when(userService.GetAllUsersPagged(anyInt(), anyInt(), (String) any())).thenReturn(playerList);
+        //Act
+        addPlayers();
+        when(userService.GetAllUsersPagged(anyInt(), anyInt(), (String) any())).thenReturn(players);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get("/user/pagged/{pageNo}/{pageSize}/{sortBy}", 1, 3, "Sort By");
+        
+        //Assert
         MockMvcBuilders.standaloneSetup(userController)
                 .build()
                 .perform(requestBuilder)

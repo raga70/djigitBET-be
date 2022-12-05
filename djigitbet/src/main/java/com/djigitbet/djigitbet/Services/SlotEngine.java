@@ -1,7 +1,6 @@
 package com.djigitbet.djigitbet.Services;
 
-import com.djigitbet.djigitbet.DataAcessLayer.ICassinoRepository;
-import com.djigitbet.djigitbet.Model.DTO.PlayerDTO;
+import com.djigitbet.djigitbet.Repositories.ICassinoRepository;
 import com.djigitbet.djigitbet.Model.DTO.SlotCalculationsDTO;
 import com.djigitbet.djigitbet.Model.Entity.Casino;
 import com.djigitbet.djigitbet.Model.Entity.Player;
@@ -12,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.sql.Ref;
-import java.util.Random;
 
 @Service
 public class SlotEngine {   //the correct way to do this  is with a static class, but since java doesn't support it, here is a janky implementation

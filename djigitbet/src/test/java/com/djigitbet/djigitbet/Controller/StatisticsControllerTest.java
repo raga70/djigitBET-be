@@ -29,9 +29,12 @@ class StatisticsControllerTest {
      */
     @Test
     void testGetAggregatedStatistics() throws Exception {
+        //Act
         when(statisticsService.GetAggregatedStatistics())
                 .thenReturn(new AggregatedStatisticsDTO(10.0d, 10.0d, 10.0d, 10.0d, 10.0d));
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/statistics/");
+        
+        //Assert
         MockMvcBuilders.standaloneSetup(statisticsController)
                 .build()
                 .perform(requestBuilder)

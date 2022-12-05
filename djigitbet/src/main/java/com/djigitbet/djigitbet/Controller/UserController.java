@@ -1,9 +1,11 @@
 package com.djigitbet.djigitbet.Controller;
 
 import com.djigitbet.djigitbet.Model.DTO.*;
+import com.djigitbet.djigitbet.Model.Entity.Message;
 import com.djigitbet.djigitbet.Model.Entity.Player;
 import com.djigitbet.djigitbet.Model.Entity.User;
 import com.djigitbet.djigitbet.Model.Entity.UserType;
+import com.djigitbet.djigitbet.Services.MessagePersistenceService;
 import com.djigitbet.djigitbet.Services.UserService;
 
 import org.modelmapper.ModelMapper;
@@ -28,6 +30,7 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
 
 
     @PostMapping("/")
@@ -122,6 +125,10 @@ public class UserController {
         }
         return true;
     }
+
+
+  
+
 
 }           
     

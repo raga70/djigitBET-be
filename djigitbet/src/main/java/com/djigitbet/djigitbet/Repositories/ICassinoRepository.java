@@ -1,4 +1,4 @@
-package com.djigitbet.djigitbet.DataAcessLayer;
+package com.djigitbet.djigitbet.Repositories;
 
 import com.djigitbet.djigitbet.Model.Entity.Casino;
 import org.springframework.data.jpa.repository.JpaRepository;

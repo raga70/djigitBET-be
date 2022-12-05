@@ -33,7 +33,6 @@ public class SlotsController {
 
     }
 
-
     @PostMapping("/")
     ResponseEntity<?> PlaceBet(@RequestHeader("Authorization") String token, @RequestBody @Validated placeBetDTO bet) {
         Player player;

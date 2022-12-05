@@ -1,4 +1,4 @@
-package com.djigitbet.djigitbet.DataAcessLayer;
+package com.djigitbet.djigitbet.Repositories;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

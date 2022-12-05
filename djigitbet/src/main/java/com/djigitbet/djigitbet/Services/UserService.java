@@ -1,6 +1,6 @@
 package com.djigitbet.djigitbet.Services;
 
-import com.djigitbet.djigitbet.DataAcessLayer.IUserRepository;
+import com.djigitbet.djigitbet.Repositories.IUserRepository;
 import com.djigitbet.djigitbet.Model.Entity.Player;
 import com.djigitbet.djigitbet.Model.Entity.User;
 import com.djigitbet.djigitbet.Model.Entity.UserType;
@@ -58,6 +58,9 @@ public class UserService {
         return userRepository.save(newUser);
     }
 
+    
+    
+    
 
     public void DeleteUser(int id) {
         userRepository.deleteById(id);

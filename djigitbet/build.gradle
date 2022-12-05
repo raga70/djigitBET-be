@@ -55,6 +55,7 @@ dependencies {
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
 	implementation "com.stripe:stripe-java:5.21.0"
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
 	

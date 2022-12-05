@@ -1,7 +1,7 @@
 package com.djigitbet.djigitbet.Services;
 
-import com.djigitbet.djigitbet.DataAcessLayer.ICassinoRepository;
-import com.djigitbet.djigitbet.DataAcessLayer.IPlayerRepository;
+import com.djigitbet.djigitbet.Repositories.ICassinoRepository;
+import com.djigitbet.djigitbet.Repositories.IPlayerRepository;
 import com.djigitbet.djigitbet.Model.DTO.AggregatedStatisticsDTO;
 import org.springframework.stereotype.Service;
 

@@ -8,7 +8,6 @@ import com.djigitbet.djigitbet.Services.SlotEngine;
 import com.djigitbet.djigitbet.Services.UserService;
 import com.djigitbet.djigitbet.security.JWTUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.impl.DefaultClaims;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,13 +36,22 @@ class SlotsControllerTest {
     @MockBean
     private UserService userService;
 
+    private placeBetDTO createPlaceBetDTO(){
+        placeBetDTO placeBetDTO = new placeBetDTO();
+        placeBetDTO.setBetAmount(10.0d);
+        return placeBetDTO;
+    }
+
     /**
      * Method under test: {@link SlotsController#getJackpot()}
      */
     @Test
     void testGetJackpot() throws Exception {
+        //Act
         when(slotEngine.getJackpot()).thenReturn(10.0d);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/slots/jackpot");
+
+        //Assert
         MockMvcBuilders.standaloneSetup(slotsController)
                 .build()
                 .perform(requestBuilder)
@@ -57,13 +65,16 @@ class SlotsControllerTest {
      */
     @Test
     void testPlaceBet() throws Exception {
-        placeBetDTO placeBetDTO = new placeBetDTO();
-        placeBetDTO.setBetAmount(10.0d);
-        String content = (new ObjectMapper()).writeValueAsString(placeBetDTO);
+        //Arrange
+        String content = (new ObjectMapper()).writeValueAsString(createPlaceBetDTO());
+
+        //Act
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/slots/")
                 .header("Authorization", "Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
+
+        //Assert
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(slotsController)
                 .build()
                 .perform(requestBuilder);
@@ -77,13 +88,16 @@ class SlotsControllerTest {
      */
     @Test
     void testPlaceBet2() throws Exception {
-        placeBetDTO placeBetDTO = new placeBetDTO();
-        placeBetDTO.setBetAmount(10.0d);
-        String content = (new ObjectMapper()).writeValueAsString(placeBetDTO);
+        //Arrange
+        String content = (new ObjectMapper()).writeValueAsString(createPlaceBetDTO());
+
+        //Act
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/slots/", "Uri Variables")
                 .header("Authorization", "Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
+
+        //Assert
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(slotsController)
                 .build()
                 .perform(requestBuilder);
@@ -97,15 +111,16 @@ class SlotsControllerTest {
      */
     @Test
     void testPlaceBet3() throws Exception {
-        when(jWTUtil.parseJWT((String) any())).thenReturn(new DefaultClaims());
-
-        placeBetDTO placeBetDTO = new placeBetDTO();
-        placeBetDTO.setBetAmount(10.0d);
-        String content = (new ObjectMapper()).writeValueAsString(placeBetDTO);
+        //Arrange
+        String content = (new ObjectMapper()).writeValueAsString(createPlaceBetDTO());
+       
+        //Act
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/slots/")
                 .header("Authorization", "Values", "Values")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
+
+        //Assert
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(slotsController)
                 .build()
                 .perform(requestBuilder);
