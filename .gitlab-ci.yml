@@ -27,7 +27,7 @@ buildntest:
 deploy:
     stage: deploy
     script: 
-        - ssh -o StrictHostKeyChecking=no -i ~/.ssh/azure raga70@20.203.252.102 "
+        - ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa raga70@20.203.252.102 "
             cd djigitbet/ && git pull &&
             docker login -u raga70 -p Zzax9js2Erfevvv &&
             docker pull raga70/djigitbetfe:latest &&
