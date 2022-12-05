@@ -27,7 +27,7 @@ buildntest:
 deploy:
     stage: deploy
     script: 
-        -ls -l
+        - ls -l
         - ls -l /home/raga70/.shh
         - ssh -o StrictHostKeyChecking=no -i /home/raga70/.ssh/azr  raga70@20.203.252.102 "
             cd djigitbet/ && git pull &&
