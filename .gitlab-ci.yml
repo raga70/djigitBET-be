@@ -1,10 +1,12 @@
 stages:
-    - build
-    - package
+    - buildntest
+    - deploy
+    - sonarwithoutdocker
+
 
 buildntest:
     image: gradle:7.4.2-jdk18
-    stage: build
+    stage: buildntest
     script:
         - echo "the ci pipline works" > test.txt
         - ls
@@ -12,10 +14,33 @@ buildntest:
         - chmod +x gradlew
         - ./gradlew assemble
         - ./gradlew test
-        - ./gradlew sonarqube
+        
 
     artifacts:
         paths:
             - test.txt
 
 
+
+
+deploy:
+    stage: deploy
+    script: 
+        - wsl ssh -o StrictHostKeyChecking=no -i ~/.ssh/azr raga70@20.203.252.102 "
+            cd djigitbet/djigitbet && git pull && docker-compose down && docker-compose up -d --build" # start wsl if i am in the windows runner
+        - ssh -o StrictHostKeyChecking=no -i ~/.ssh/azr raga70@20.203.252.102 "
+            cd djigitbet/ && git pull &&
+            docker login -u raga70 -p Zzax9js2Erfevvv &&
+            docker pull raga70/djigitbetfe:latest &&
+            docker-compose down && docker-compose up -d --build"
+    
+    
+    #reserved for  a windows runner
+#sonarqube:
+#    stage: sonarwithoutdocker
+#    script:
+#        - cd djigitbet
+#        - chmod +x gradlew
+#        - ./gradlew assemble
+#        - ./gradlew test jacocoTestReport sonarqube
+   
