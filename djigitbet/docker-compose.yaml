@@ -2,8 +2,8 @@ version: "3"
 services:
   djigitbe:
     ports:
-      - "8000:8000"
-    build: 
+      - "8080:8080"
+    build:
       context: .
       dockerfile: Dockerfile
     depends_on:
