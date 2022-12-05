@@ -27,8 +27,6 @@ buildntest:
 deploy:
     stage: deploy
     script: 
-        - wsl ssh -o StrictHostKeyChecking=no -i ~/.ssh/azr raga70@20.203.252.102 "
-            cd djigitbet/djigitbet && git pull && docker-compose down && docker-compose up -d --build" # start wsl if i am in the windows runner
         - ssh -o StrictHostKeyChecking=no -i ~/.ssh/azr raga70@20.203.252.102 "
             cd djigitbet/ && git pull &&
             docker login -u raga70 -p Zzax9js2Erfevvv &&
