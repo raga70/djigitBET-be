@@ -8,7 +8,7 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - bedb
-    restart: always
+    restart: "no"
     networks:
         jjt:
             ipv4_address: 10.56.1.2

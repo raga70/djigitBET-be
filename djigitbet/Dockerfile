@@ -1,4 +1,5 @@
-FROM gradle:7.4.2-jdk17
+FROM openjdk:17-jdk-slim
+VOLUME /tmp
 EXPOSE 8080
-ADD build/libs/djigitbet-0.0.1-SNAPSHOT.jar djigitbet.jar
+COPY build/libs/djigitbet-0.0.1-SNAPSHOT.jar djigitbet.jar
 ENTRYPOINT ["java", "-jar", "djigitbet.jar"]
