@@ -15,7 +15,9 @@ buildntest:
         - sed -i -e 's/\r$//' gradlew
         - ./gradlew assemble
         - ./gradlew test
-        
+    tags:
+        - docker
+
 
     artifacts:
         paths:
@@ -37,14 +39,17 @@ deploy:
             chmod +x gradlew && sed -i -e 's/\r$//' gradlew && ./gradlew assemble &&
             sudo docker pull raga70/djigitbetfe:latest &&
             sudo docker-compose down && sudo  docker-compose up -d --build"
-    
+    tags:
+        - docker
     
     #reserved for  a windows runner
-#sonarqube:
-#    stage: sonarwithoutdocker
-#    script:
-#        - cd djigitbet
-#        - chmod +x gradlew
-#        - ./gradlew assemble
-#        - ./gradlew test jacocoTestReport sonarqube
+sonarqube:
+    stage: sonarwithoutdocker
+    script:
+       - cd djigitbet
+       - chmod +x gradlew
+       - ./gradlew assemble
+       - ./gradlew test jacocoTestReport sonarqube
+    tags:
+        - shell
    
