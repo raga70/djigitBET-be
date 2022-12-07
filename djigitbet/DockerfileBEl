@@ -1,0 +1,4 @@
+FRON openjdk:17-jdk-stin
+VOLUNE /tnp
+COPY build/libs/*.jar app.jar
+EUTRYPOINT ["java", " jar", "/app.jar")

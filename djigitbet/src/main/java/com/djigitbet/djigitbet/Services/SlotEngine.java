@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Random;
 
 @Service
 public class SlotEngine {   //the correct way to do this  is with a static class, but since java doesn't support it, here is a janky implementation
@@ -18,8 +19,9 @@ public class SlotEngine {   //the correct way to do this  is with a static class
 
     ICassinoRepository casinoRepository;
     UserService userService;
-
-    SecureRandom random = SecureRandom.getInstanceStrong();
+    //switched to a normal random because of the deployment docker container
+    SecureRandom randomOld = SecureRandom.getInstanceStrong();
+    Random random = new Random();
     Casino casino;
 
  private final ModelMapper modelMapper = new ModelMapper();
