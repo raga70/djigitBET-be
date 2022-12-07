@@ -47,7 +47,7 @@ sonarqube:
     stage: sonarwithoutdocker
     script:
        - cd djigitbet
-       - chmod +x gradlew
+       #- chmod +x gradlew
        - ./gradlew assemble
        - ./gradlew test jacocoTestReport sonarqube
     tags:
