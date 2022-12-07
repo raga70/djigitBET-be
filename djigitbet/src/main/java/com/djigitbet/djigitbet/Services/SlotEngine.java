@@ -20,7 +20,7 @@ public class SlotEngine {   //the correct way to do this  is with a static class
     ICassinoRepository casinoRepository;
     UserService userService;
     //switched to a normal random because of the deployment docker container
-    SecureRandom randomOld = SecureRandom.getInstanceStrong();
+   // SecureRandom randomOld = SecureRandom.getInstanceStrong();
     Random random = new Random();
     Casino casino;
 
